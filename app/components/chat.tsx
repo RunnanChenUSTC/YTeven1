@@ -7,7 +7,6 @@ import React, {
   useCallback,
   Fragment,
 } from "react";
-import { useAccessStore } from "./auth.tsx";
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
 import RenameIcon from "../icons/rename.svg";
