@@ -7,7 +7,7 @@ import React, {
   useCallback,
   Fragment,
 } from "react";
-
+import { useAccessStore } from "./auth.tsx";
 import SendWhiteIcon from "../icons/send-white.svg";
 import BrainIcon from "../icons/brain.svg";
 import RenameIcon from "../icons/rename.svg";
@@ -711,6 +711,13 @@ function _Chat() {
     setPromptHints([]);
     if (!isMobileScreen) inputRef.current?.focus();
     setAutoScroll(true);
+    const accessStore = useAccessStore();
+    const userId = accessStore.accessCode; 
+    window.gtag('event', 'send_message', {
+      'event_category': 'Chat',
+      'event_label': userId,
+      'value': userInput
+    });
   };
 
   const onPromptSelect = (prompt: RenderPompt) => {
