@@ -693,7 +693,8 @@ function _Chat() {
       }
     }
   };
-
+  const accessStore = useAccessStore();
+  const userId = accessStore.accessCode;
   const doSubmit = (userInput: string) => {
     if (userInput.trim() === "") return;
     const matchCommand = chatCommands.match(userInput);
@@ -709,9 +710,7 @@ function _Chat() {
     setUserInput("");
     setPromptHints([]);
     if (!isMobileScreen) inputRef.current?.focus();
-    setAutoScroll(true);
-    const accessStore = useAccessStore();
-    const userId = accessStore.accessCode; 
+    setAutoScroll(true); 
     window.gtag('event', 'send_message', {
       'event_category': 'Chat',
       'event_label': userId,
