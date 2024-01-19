@@ -132,10 +132,7 @@ function Steps<
 
 export function MessageExporter() {
   const steps = [
-    {
-      name: Locale.Export.Steps.Select,
-      value: "select",
-    },
+
     {
       name: Locale.Export.Steps.Preview,
       value: "preview",
