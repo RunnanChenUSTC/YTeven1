@@ -597,7 +597,7 @@ function _Chat() {
         window.gtag('event', 'robot response', {
           'event_category': 'Chat',
           'event_label': 'Robot Response',
-          'value': robotResponse
+          'response': robotResponse
         });
       }
     });
