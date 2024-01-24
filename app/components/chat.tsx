@@ -582,21 +582,37 @@ function _Chat() {
       return;
     }
     setIsLoading(true);
-    chatStore.onUserInput(userInput).then(() => setIsLoading(false));
-    const session = chatStore.currentSession();
-    const lastMessage = session.messages[session.messages.length - 1];
-    if (lastMessage && lastMessage.role === 'assistant') {
-      const robotResponse = lastMessage.content;
-    localStorage.setItem(LAST_INPUT_KEY, userInput);
-    setUserInput("");
-    setPromptHints([]);
-    if (!isMobileScreen) inputRef.current?.focus();
-    setAutoScroll(true); 
-    const timestamp = new Date();
-    const record = `event_label: ${userId}, user_input_text: ${userInput}, timestamp: ${timestamp}`;
-    window.gtag('event', 'send_message', { 'record': record });
-    window.gtag('event', 'bot_message', { 'robotResponse': robotResponse });
-  };
+    chatStore.onUserInput(userInput).then(() => {
+      setIsLoading(false);
+  
+      // 获取当前会话
+      const session = chatStore.currentSession();
+  
+      // 获取会话中的最后一条消息，假设它是机器人的回答
+      const lastMessage = session.messages[session.messages.length - 1];
+      if (lastMessage && lastMessage.role === 'assistant') {
+        const robotResponse = lastMessage.content; // 提取机器人的回答
+  
+        // 发送机器人的回答到 Google Analytics
+        gtag('event', 'robot response', {
+          'event_category': 'Chat',
+          'event_label': 'Robot Response',
+          'value': robotResponse
+        });
+      }
+    });
+
+  localStorage.setItem(LAST_INPUT_KEY, userInput);
+  setUserInput("");
+  setPromptHints([]);
+  if (!isMobileScreen) inputRef.current?.focus();
+  setAutoScroll(true);
+
+  const timestamp = new Date();
+  const record = `event_label: ${userId}, user_input_text: ${userInput}, timestamp: ${timestamp}`;
+  window.gtag('event', 'send_message', { 'record': record });
+};
+
 
   const onPromptSelect = (prompt: RenderPompt) => {
     setTimeout(() => {
