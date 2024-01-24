@@ -543,7 +543,7 @@ export function EditMessageModal(props: { onClose: () => void }) {
 
 function _Chat() {
   type RenderMessage = ChatMessage & { preview?: boolean };
-  const [lastUserInput, setLastUserInput] = useState({ userInput: '', index: null});
+  const [lastUserInput, setLastUserInput] = useState({ userInput: '', index: -1});
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const config = useAppConfig();
