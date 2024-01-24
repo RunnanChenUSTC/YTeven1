@@ -543,7 +543,7 @@ export function EditMessageModal(props: { onClose: () => void }) {
 
 function _Chat() {
   type RenderMessage = ChatMessage & { preview?: boolean };
-  const [lastUserInput, setLastUserInput] = useState({ userInput: '', timestamp: new Date() });
+  const [lastUserInput, setLastUserInput] = useState({ userInput: '', index: null});
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
   const config = useAppConfig();
@@ -644,22 +644,21 @@ function _Chat() {
     if (!isMobileScreen) inputRef.current?.focus();
     setAutoScroll(true); 
     const timestamp = new Date();
-    setLastUserInput({ userInput, timestamp });
+    setLastUserInput({ userInput, index: session.messages.length });
     const record = `event_label: ${userId}, user_input_text: ${userInput}, timestamp: ${timestamp}`;
     window.gtag('event', 'send_message', { 'record': record });
   };
   const findLatestAssistantResponse = () => {
-  if (!lastUserInput) return;
+    if (!lastUserInput) return;
 
-  const response = messages.find((message) => {
-    return message.role === 'assistant' && new Date(message.timestamp) > new Date(lastUserInput.timestamp);
-  });
+    const lastIndex = lastUserInput.index;
+    const response = session.messages.slice(lastIndex + 1).find((message) => message.role === 'assistant');
 
-  if (response) {
-    // 发送Google Analytics事件
-    window.gtag('event', 'botresponse', { 'content': response.content });
-  }
-};
+    if (response) {
+      // 发送Google Analytics事件
+      window.gtag('event', 'botresponse', { 'content': response.content });
+    }
+  };
   const onPromptSelect = (prompt: RenderPompt) => {
     setTimeout(() => {
       setPromptHints([]);
