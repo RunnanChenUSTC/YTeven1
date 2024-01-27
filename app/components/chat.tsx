@@ -539,6 +539,8 @@ function _Chat() {
     },
   );
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  const accessStore2 = useAccessStore();
+  const username = accessStore2.accessCode;
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const [hasSentEvent, setHasSentEvent] = useState(false);
@@ -554,12 +556,11 @@ function _Chat() {
       const userMessages = session.messages.filter(message => message.role === 'user');
       const lastUserMessage = userMessages[userMessages.length - 1];
       const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
+      const eventParametersString = `event_category: Chat, event_label: Bot Response,user_id: ${username},user_question: ${userQuestion}, bot_response: ${lastMessage.content}, timestamp: ${timestamp}`;
       window.gtag('event', 'bot_message', {
         'event_category': 'Chat',
         'event_label': 'Bot Response',
-        'user_question': userQuestion,
-        'bot_response': lastMessage.content,
-        'timestamp': timestamp
+        'bot_answer': eventParametersString
       });
      setHasSentEvent(true)
     }
