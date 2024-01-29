@@ -164,7 +164,7 @@ function PromptToast(props: {
         >
           <BrainIcon />
           <span className={styles["prompt-toast-content"]}>
-            {Locale.Context.Toast(context.length)}
+            
           </span>
         </div>
       )}
