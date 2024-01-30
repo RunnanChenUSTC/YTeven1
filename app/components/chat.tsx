@@ -585,6 +585,8 @@ function _Chat() {
   };
   const accessStore1 = useAccessStore();
   const userId = accessStore1.accessCode;
+  const accessStore3 = useAccessStore();
+  const userAccess = accessStore3.accessCode;
   const doSubmit = (userInput: string) => {
     if (userInput.trim() === "") return;
     const matchCommand = chatCommands.match(userInput);
@@ -623,8 +625,9 @@ function _Chat() {
 
   const timestamp = new Date();
   const record = `event_label: ${userId}, user_input_text: ${userInput}, timestamp: ${timestamp}`;
+  const userrec = `${userAccess}`;
   window.gtag('event', 'send_message', { 'record': record });
-  window.gtag('event', 'user_access', { 'user_id': userId });
+  window.gtag('event', 'user_access', {  'userrec': userrec });
   setHasSentEvent(false);
 };
 
