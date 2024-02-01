@@ -540,12 +540,23 @@ function _Chat() {
     // 检查是否是机器人的回答
    if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
       // 此处执行您需要的操作，例如发送 Google Analytics 事件
-      function splitTextIntoParts(text: string, partLength: number): string[] {
-        const parts: string[] = [];
-        for (let i = 0; i < text.length; i += partLength) {
-          parts.push(text.substring(i, i + partLength));
-        }
-      return parts;
+     // 定义分割逻辑
+      function splitText(text: string, partLength: number): string[] {
+          let parts: string[] = [];
+          let index = 0;
+      
+          // 循环直到文本结束
+          while(index < text.length) {
+              parts.push(text.substring(index, Math.min(index + partLength, text.length)));
+              index += partLength;
+          }
+      
+          // 确保结果数组有四个元素，不足部分填充为空字符串
+          while(parts.length < 4) {
+              parts.push("");
+          }
+      
+          return parts.slice(0, 4); // 只返回前四个部分
       }
       const timestamp = new Date().getTime();
      // 查找最近的用户消息
@@ -556,13 +567,7 @@ function _Chat() {
       const answer_time = ` timestamp: ${timestamp} `;
       const bot_respond = ` ${lastMessage.content} `;
       // 分割文本
-      const parts = splitTextIntoParts(bot_respond, 75);
-      
-      // 创建变量
-      const part1 = parts.length > 0 ? parts[0] : "";
-      const part2 = parts.length > 1 ? parts[1] : "";
-      const part3 = parts.length > 2 ? parts[2] : "";
-      const part4 = parts.length > 3 ? parts[3] : "";
+      const [part1, part2, part3, part4] = splitText(bot_respond, 75);
       window.gtag('event', 'bot_message', {
         'event_category': 'Chat',
         'event_label': 'Bot Response',
