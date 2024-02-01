@@ -545,13 +545,15 @@ function _Chat() {
       const userMessages = session.messages.filter(message => message.role === 'user');
       const lastUserMessage = userMessages[userMessages.length - 1];
       const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
-      const eventParametersString = `event_category: Chat, event_label: Bot Response,user_id: ${username},user_question: ${userQuestion}, timestamp: ${timestamp}`;
+      const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
+      const answer_time = ` timestamp: ${timestamp} `;
       const bot_respond = ` ${lastMessage.content} `;
       window.gtag('event', 'bot_message', {
         'event_category': 'Chat',
         'event_label': 'Bot Response',
         'user_question': eventParametersString,
-        'bot_respond': bot_respond
+        'bot_respond': bot_respond,
+        'answer_time': answer_time
       });
      setHasSentEvent(true)
     }
