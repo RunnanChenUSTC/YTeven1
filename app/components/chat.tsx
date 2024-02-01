@@ -540,6 +540,13 @@ function _Chat() {
     // 检查是否是机器人的回答
    if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
       // 此处执行您需要的操作，例如发送 Google Analytics 事件
+      function splitTextIntoParts(text: string, partLength: number): string[] {
+        const parts: string[] = [];
+        for (let i = 0; i < text.length; i += partLength) {
+          parts.push(text.substring(i, i + partLength));
+        }
+      return parts;
+      }
       const timestamp = new Date().getTime();
      // 查找最近的用户消息
       const userMessages = session.messages.filter(message => message.role === 'user');
@@ -548,6 +555,14 @@ function _Chat() {
       const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
       const answer_time = ` timestamp: ${timestamp} `;
       const bot_respond = ` ${lastMessage.content} `;
+      // 分割文本
+      const parts = splitTextIntoParts(botRespond, 75);
+      
+      // 创建变量
+      const part1 = parts.length > 0 ? parts[0] : "";
+      const part2 = parts.length > 1 ? parts[1] : "";
+      const part3 = parts.length > 2 ? parts[2] : "";
+      const part4 = parts.length > 3 ? parts[3] : "";
       window.gtag('event', 'bot_message', {
         'event_category': 'Chat',
         'event_label': 'Bot Response',
