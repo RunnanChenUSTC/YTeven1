@@ -556,7 +556,7 @@ function _Chat() {
       const answer_time = ` timestamp: ${timestamp} `;
       const bot_respond = ` ${lastMessage.content} `;
       // 分割文本
-      const parts = splitTextIntoParts(botRespond, 75);
+      const parts = splitTextIntoParts(bot_respond, 75);
       
       // 创建变量
       const part1 = parts.length > 0 ? parts[0] : "";
