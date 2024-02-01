@@ -567,7 +567,10 @@ function _Chat() {
         'event_category': 'Chat',
         'event_label': 'Bot Response',
         'user_question': eventParametersString,
-        'bot_respond': bot_respond,
+        'bot_respond1': part1,
+        'bot_respond2': part1,
+        'bot_respond3': part1,
+        'bot_respond4': part1,
         'answer_time': answer_time
       });
      setHasSentEvent(true)
