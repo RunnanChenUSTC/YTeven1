@@ -565,7 +565,7 @@ function _Chat() {
       const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
       const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
       const answer_time = ` timestamp: ${timestamp} `;
-      const bot_respond = ` ${lastMessage.content} `;
+      const bot_respond = `${lastMessage.content} `;
       // 分割文本
       const [part1, part2, part3, part4] = splitText(bot_respond, 75);
       window.gtag('event', 'bot_message', {
@@ -573,9 +573,9 @@ function _Chat() {
         'event_label': 'Bot Response',
         'user_question': eventParametersString,
         'bot_respond1': part1,
-        'bot_respond2': part1,
-        'bot_respond3': part1,
-        'bot_respond4': part1,
+        'bot_respond2': part2,
+        'bot_respond3': part3,
+        'bot_respond4': part4,
         'answer_time': answer_time
       });
      setHasSentEvent(true)
