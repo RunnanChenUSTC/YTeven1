@@ -555,7 +555,7 @@ function _Chat() {
               parts.push("empty");
           }
       
-          return parts.slice(0, 7); // 只返回前四个部分
+          return parts.slice(0, 6); // 只返回前四个部分
       }
       const timestamp = new Date().getTime();
      // 查找最近的用户消息
