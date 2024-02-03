@@ -557,13 +557,13 @@ function _Chat() {
       
           return parts.slice(0, 7); // 只返回前四个部分
       }
-      const timestamp = new Date().getTime();
+      const timestamp1 = new Date();
      // 查找最近的用户消息
       const userMessages = session.messages.filter(message => message.role === 'user');
       const lastUserMessage = userMessages[userMessages.length - 1];
       const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
       const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
-      const answer_time = ` timestamp: ${timestamp} `;
+      const answer_time = ` timestamp: ${timestamp1} `;
       const bot_respond = `${lastMessage.content} `;
       // 分割文本
       const [part1, part2, part3, part4, part5, part6, part7] = splitText(bot_respond, 75);
