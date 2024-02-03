@@ -563,7 +563,7 @@ function _Chat() {
       const lastUserMessage = userMessages[userMessages.length - 1];
       const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
       const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
-      const answer_time = ` timestamp: ${timestamp1} `;
+      const answer_time = ` ${timestamp1} `;
       const bot_respond = `${lastMessage.content} `;
       // 分割文本
       const [part1, part2, part3, part4, part5, part6, part7] = splitText(bot_respond, 75);
