@@ -1,5 +1,5 @@
 //import * as jwtDecode from 'jwt-decode';
-import jwtDecode from 'jwt-decode'; // Correct import for jwt-decode
+// import jwtDecode from 'jwt-decode'; // Correct import for jwt-decode
 import { useDebouncedCallback } from "use-debounce";
 import React, {
   useState,
@@ -83,6 +83,7 @@ import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { getClientConfig } from "../config/client";
 import { useAllModels } from "../utils/hooks";
+const jwtDecode = require('jwt-decode');
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
