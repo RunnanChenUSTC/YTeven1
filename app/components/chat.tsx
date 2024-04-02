@@ -538,7 +538,7 @@ function _Chat() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {
-      const decodedToken = jwtDecode.decode(token);
+      const decodedToken = jwtDecode(token);
       console.log('Extracted Username:', decodedToken.username);
     }
   }, []); // Empty dependency array means this effect runs once on mount
