@@ -1,3 +1,4 @@
+import jwtDecode from 'jwt-decode';
 import { useDebouncedCallback } from "use-debounce";
 import React, {
   useState,
@@ -667,6 +668,20 @@ function _Chat() {
       
     return parts.slice(0, 4); // 只返回前四个部分
   }
+  useEffect(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
+
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token) as { username: string; };
+        console.log('UserName:', decodedToken.username);
+        // Now you can use decodedToken.username in your component's state or for other purposes
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+  }, []);  
   const timestamp = new Date();
   const record = `${userInput}`;
   const user_name = `${userId}`;
