@@ -95,7 +95,7 @@ const ChatComponent = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode.decode(token);
       setUsername(decodedToken.username);
       console.log('Extracted Username:', decodedToken.username);
     }
