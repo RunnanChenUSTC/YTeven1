@@ -1,6 +1,6 @@
 //import * as jwtDecode from 'jwt-decode';
 // import jwtDecode from 'jwt-decode'; // Correct import for jwt-decode
-import jwt_decode, { JwtPayload } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import { useDebouncedCallback } from "use-debounce";
 import React, {
   useState,
@@ -538,8 +538,8 @@ function _Chat() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {
-      const decoded = jwt_decode<JwtPayload>(token || '') || null;
-      console.log('Extracted Username:', decoded.username);
+      const decodedToken = jwtDecode(token);
+      console.log('Extracted Username:', decodedToken.username);
     }
   }, []); // Empty dependency array means this effect runs once on mount
   useEffect(measure, [userInput]);
