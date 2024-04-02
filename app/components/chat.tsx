@@ -539,7 +539,7 @@ function _Chat() {
     const token = urlParams.get('token');
     if (token) {
       const decodedToken = jwtDecode.decode(token);
-      setUsername(decodedToken.username);
+      console.log('Extracted Username:', decodedToken.username);
     }
   }, []); // Empty dependency array means this effect runs once on mount
   useEffect(measure, [userInput]);
