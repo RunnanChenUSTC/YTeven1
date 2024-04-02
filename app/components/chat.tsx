@@ -534,6 +534,8 @@ function _Chat() {
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
   // This useEffect is at the top level of your functional component
+  const [username, setUsername] = useState('');
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
