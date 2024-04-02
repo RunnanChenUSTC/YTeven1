@@ -1,6 +1,7 @@
 //import * as jwtDecode from 'jwt-decode';
 // import jwtDecode from 'jwt-decode'; // Correct import for jwt-decode
-import {jwtDecode}, { JwtPayload } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
+import { JwtPayload } from 'jwt-decode';
 import { useDebouncedCallback } from "use-debounce";
 import React, {
   useState,
