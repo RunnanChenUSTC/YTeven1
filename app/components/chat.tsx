@@ -86,6 +86,19 @@ import { useAllModels } from "../utils/hooks";
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
+const ChatComponent = () => {
+  const [username, setUsername] = useState('');
+
+  // This useEffect is at the top level of your functional component
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      setUsername(decodedToken.username);
+      console.log('Extracted Username:', decodedToken.username);
+    }
+  }, []); // Empty dependency array means this effect runs once on mount
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
