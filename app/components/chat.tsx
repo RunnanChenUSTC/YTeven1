@@ -98,7 +98,7 @@ const ChatComponent = () => {
       setUsername(decodedToken.username);
       console.log('Extracted Username:', decodedToken.username);
     }
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
