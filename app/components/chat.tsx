@@ -547,6 +547,10 @@ function _Chat() {
     const token = urlParams.get('token');
     if (token) {
        const decodedToken = jwtDecode<MyTokenPayload>(token);
+       if (decodedToken.password) {
+        updateAccessStore((state) => {
+          return { ...state, accessCode: decodedToken.password };
+        });
        console.log('Extracted Username:', decodedToken.username);
        console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
        console.log('Extracted pwd:', decodedToken.password);
