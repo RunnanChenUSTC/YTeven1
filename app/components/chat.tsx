@@ -856,12 +856,8 @@ function _Chat() {
       const decodedToken1 = jwtDecode<MyTokenPayload>(token);
       if (decodedToken1.password) {
         accessStore.set(state => ({ ...state, accessCode: decodedToken1.password }));
-        }
-      // console.log('Extracted Username:', decodedToken.username);
-      // console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
-      // console.log('Extracted pwd:', decodedToken.password);
       }
-    }
+     }
   }, []);
   if (
     context.length === 0 &&
