@@ -555,7 +555,7 @@ function _Chat() {
        console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
        console.log('Extracted pwd:', decodedToken.password);
     }
-  }, []); // Empty dependency array means this effect runs once on mount
+  }, [updateAccessStore]); // Empty dependency array means this effect runs once on mount
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const [hasSentEvent, setHasSentEvent] = useState(false);
