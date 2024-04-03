@@ -548,6 +548,7 @@ function _Chat() {
        const decodedToken = jwtDecode<MyTokenPayload>(token);
        console.log('Extracted Username:', decodedToken.username);
        console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
+       console.log('Extracted pwd:', decodedToken.password);
     }
   }, []); // Empty dependency array means this effect runs once on mount
   useEffect(measure, [userInput]);
