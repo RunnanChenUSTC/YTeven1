@@ -545,17 +545,19 @@ function _Chat() {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
+
     if (token) {
-       const decodedToken = jwtDecode<MyTokenPayload>(token);
-       if (decodedToken.password) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.password) {
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
         });
-       console.log('Extracted Username:', decodedToken.username);
-       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
-       console.log('Extracted pwd:', decodedToken.password);
+      console.log('Extracted Username:', decodedToken.username);
+      console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
+      console.log('Extracted pwd:', decodedToken.password);
+      }
     }
-  }, [updateAccessStore]); // Empty dependency array means this effect runs once on mount
+  }, [updateAccessStore]);
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const [hasSentEvent, setHasSentEvent] = useState(false);
