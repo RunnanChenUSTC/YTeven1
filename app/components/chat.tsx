@@ -538,6 +538,7 @@ function _Chat() {
     },
   );
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  const updateAccessStore = useAccessStore((state) => state.update);
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
   // eslint-disable-next-line react-hooks/exhaustive-deps
