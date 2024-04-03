@@ -547,7 +547,7 @@ function _Chat() {
     const token = urlParams.get('token');
 
     if (token) {
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwtDecode<MyTokenPayload>(token);
       if (decodedToken.password) {
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
