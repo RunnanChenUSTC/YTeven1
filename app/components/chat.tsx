@@ -848,23 +848,25 @@ function _Chat() {
     return session.mask.hideContext ? [] : session.mask.context.slice();
   }, [session.mask.context, session.mask.hideContext]);
   const accessStore = useAccessStore();
-  if (
-    context.length === 0 &&
-    session.messages.at(0)?.content !== BOT_HELLO.content
-  ) {
-    const copiedHello = Object.assign({}, BOT_HELLO);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => {
+  useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
 
     if (token) {
       const decodedToken1 = jwtDecode<MyTokenPayload>(token);
       if (decodedToken1.password) {
-        accessStore.accessCode = decodedToken1.password;
+        accessStore.update((access) => {
+          access.openaiApiKey = access.openaiApiKey;
+          access.accessCode = decodedToken1.password;
+        });
       }
      }
     }, []);
+  if (
+    context.length === 0 &&
+    session.messages.at(0)?.content !== BOT_HELLO.content
+  ) {
+    const copiedHello = Object.assign({}, BOT_HELLO);
     if (!accessStore.isAuthorized()) {
       copiedHello.content = Locale.Error.Unauthorized;
     }
