@@ -2,6 +2,12 @@
 // import jwtDecode from 'jwt-decode'; // Correct import for jwt-decode
 import {jwtDecode} from 'jwt-decode';
 import { JwtPayload } from 'jwt-decode';
+// Define a new interface that includes the expected properties from the JWT payload
+interface MyTokenPayload extends JwtPayload {
+  username?: string;
+  experimentGroup?: string;
+  password?: string;
+}
 import { useDebouncedCallback } from "use-debounce";
 import React, {
   useState,
@@ -539,8 +545,9 @@ function _Chat() {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     if (token) {
-      const decodedToken = jwtDecode<JwtPayload & { username?: string }>(token);
-      console.log('Extracted Username:', decodedToken.username);
+       const decodedToken = jwtDecode<MyTokenPayload>(token);
+       console.log('Extracted Username:', decodedToken.username);
+       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
     }
   }, []); // Empty dependency array means this effect runs once on mount
   useEffect(measure, [userInput]);
