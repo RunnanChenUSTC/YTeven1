@@ -6,7 +6,7 @@ import { JwtPayload } from 'jwt-decode';
 interface MyTokenPayload extends JwtPayload {
   username?: string;
   experimentGroup?: string;
-  password?: string;
+  password: string;
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
