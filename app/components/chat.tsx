@@ -855,7 +855,7 @@ function _Chat() {
     if (token) {
       const decodedToken1 = jwtDecode<MyTokenPayload>(token);
       if (decodedToken1.password) {
-        accessStore.accessCode: decodedToken1.password;
+        accessStore.accessCode = decodedToken1.password;
       }
      }
   }, []);
