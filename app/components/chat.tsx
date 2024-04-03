@@ -848,6 +848,21 @@ function _Chat() {
     return session.mask.hideContext ? [] : session.mask.context.slice();
   }, [session.mask.context, session.mask.hideContext]);
   const accessStore = useAccessStore();
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+      const decodedToken1 = jwtDecode<MyTokenPayload>(token);
+      if (decodedToken1.password) {
+        accessStore.set(state => ({ ...state, accessCode: decodedToken1.password }));
+        });
+      // console.log('Extracted Username:', decodedToken.username);
+      // console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
+      // console.log('Extracted pwd:', decodedToken.password);
+      }
+    }
+  }, []);
   if (
     context.length === 0 &&
     session.messages.at(0)?.content !== BOT_HELLO.content
