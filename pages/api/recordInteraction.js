@@ -1,5 +1,4 @@
 // Import necessary modules and types
-import jwt from 'jsonwebtoken';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
 
