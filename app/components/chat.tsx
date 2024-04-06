@@ -594,6 +594,7 @@ function _Chat() {
       const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
       const answer_time = ` ${timestamp1} `;
       const bot_respond = `${lastMessage.content} `;
+      const botrespondtime = lastMessage.date
       // 分割文本
       const [part1, part2, part3, part4, part5, part6, part7] = splitText(bot_respond, 75);
       window.gtag('event', 'bot_message', {
