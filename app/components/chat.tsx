@@ -589,6 +589,7 @@ function _Chat() {
      // 查找最近的用户消息
       const userMessages = session.messages.filter(message => message.role === 'user');
       const lastUserMessage = userMessages[userMessages.length - 1];
+      const userMessageTime = lastUserMessage.date
       const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
       const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
       const answer_time = ` ${timestamp1} `;
