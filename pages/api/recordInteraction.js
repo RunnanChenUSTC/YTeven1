@@ -1,5 +1,5 @@
 // Import necessary modules and types
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 import mysql from 'mysql2/promise';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
