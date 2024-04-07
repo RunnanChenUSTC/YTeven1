@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 //import jwt from 'jsonwebtoken';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import mysql2 from 'mysql2/promise';
+import { RowDataPacket } from 'mysql2';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Check if the request method is POST
@@ -36,9 +37,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     } else if (action === 'fetchUserID') {
       const { username } = data;
-      const [rows] = await connection.execute(
-        'SELECT UserID FROM user WHERE UserName = ?',
-        [username]
+      const [rows] = await connection.execute<RowDataPacket[]>(
+        'SELECT UserID FROM user WHERE UserName = ?', [username]
       );
 
       if (rows.length > 0) {
