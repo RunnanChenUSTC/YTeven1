@@ -658,7 +658,23 @@ function _Chat() {
   const userAccess = accessStore3.accessCode;
   const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "") return;
-    await recordUserInteraction(visitor, "User Input", new Date(), userInput, "User sent a message");
+    // Fetch UserID based on the username
+    const userResponse = await fetch('/api/recordInteraction', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'fetchUserID',
+        username: visitor,
+      }),
+    });
+   
+    if (!userResponse.ok) {
+      throw new Error('Failed to fetch user ID');
+    }
+    const { UserID } = await userResponse.json();
+    await recordUserInteraction(UserID, "User Input", new Date(), userInput, "User sent a message");
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
