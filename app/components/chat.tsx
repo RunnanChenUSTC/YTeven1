@@ -549,7 +549,7 @@ function _Chat() {
   const updateAccessStore = useAccessStore((state) => state.update);
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
-  const [username5, setUsername5] = useState(null);
+  const [username5, setUsername5] = useState<string | null>(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
