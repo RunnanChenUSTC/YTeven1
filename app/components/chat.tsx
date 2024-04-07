@@ -559,6 +559,7 @@ function _Chat() {
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       if (decodedToken.password) {
         setvisname(decodedToken.username || null);
+        console.log('Extracted Username1:', visitor);
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
         });
