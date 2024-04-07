@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       'INSERT INTO UserLogs (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
       [UserID, ButtonName, UserLogTime, GPTMessages, Note]
     );
-    const json: any = results;
+    const json: any = result;
     return json.affectedRows;
 
     // Check if the insertion was successful
