@@ -549,7 +549,7 @@ function _Chat() {
   const updateAccessStore = useAccessStore((state) => state.update);
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
-  const [visitor, setvisname] = useState<string | null>(null);
+  const [username5, setUsername5] = useState(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -558,8 +558,8 @@ function _Chat() {
     if (token) {
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       if (decodedToken.password) {
-        setvisname(decodedToken.username || null);
-        console.log('Extracted Username1:', visitor);
+        setUsername5(decodedToken.username || null);
+        console.log('Extracted Username1:', username5);
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
         });
