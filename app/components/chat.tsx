@@ -549,7 +549,7 @@ function _Chat() {
   const updateAccessStore = useAccessStore((state) => state.update);
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
-  const [username5, setUsername5] = useState<string | null>(null);
+  const [extractedUsername, setExtractedUsername] = useState(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -558,17 +558,19 @@ function _Chat() {
     if (token) {
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       if (decodedToken.password) {
-        setUsername5(decodedToken.username || null);
-        console.log('Extracted Username1:', username5);
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
-        });
+        });    
+        if (decodedToken.username) {
+            setExtractedUsername(decodedToken.username);
+        }
       console.log('Extracted Username:', decodedToken.username);
       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
       console.log('Extracted pwd:', decodedToken.password);
       }
     }
-  }, [updateAccessStore]);
+    console.log('Extracted Username (extractedUsername state):', extractedUsername);
+  }, [updateAccessStore,extractedUsername]);
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const [hasSentEvent, setHasSentEvent] = useState(false);
