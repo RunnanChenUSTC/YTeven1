@@ -25,13 +25,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Connect to the database
     const connection = await mysql2.createConnection(connectionConfig);
 
-    // Insert data into the database
-    const [result,buff] = await connection.execute(
-      'INSERT INTO UserLogs (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
+    const [result] = await connection.execute<mysql2.ResultSetHeader>(
+      'INSERT INTO UserLog (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
       [UserID, ButtonName, UserLogTime, GPTMessages, Note]
     );
-    const json: any = result;
-    return json.affectedRows;
 
     // Check if the insertion was successful
     if (result.affectedRows > 0) {
