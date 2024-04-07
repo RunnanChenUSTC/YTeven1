@@ -677,7 +677,23 @@ function _Chat() {
       throw new Error('Failed to fetch user ID');
     }
     const { UserID } = await userResponse.json();
-    await recordUserInteraction(UserID, "User Input", new Date(), userInput, "User sent a message");
+    const response = await fetch('/api/recordInteraction', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'logUserMessage',
+        UserID: UserID,
+        ButtonName: "User Input",
+        UserLogTime: new Date(),
+        GPTMessages: userInput,
+        Note: "User sent a message"
+      }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to insert user msg');
+    }
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
