@@ -656,8 +656,9 @@ function _Chat() {
   const userId = accessStore1.accessCode;
   const accessStore3 = useAccessStore();
   const userAccess = accessStore3.accessCode;
-  const doSubmit = (userInput: string) => {
+  const doSubmit = async (userInput: string) => {
     if (userInput.trim() === "") return;
+    await recordUserInteraction(visitor, "User Input", new Date(), userInput, "User sent a message");
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
