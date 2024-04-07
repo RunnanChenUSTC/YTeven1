@@ -549,7 +549,7 @@ function _Chat() {
   const updateAccessStore = useAccessStore((state) => state.update);
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
-  const [extractedUsername, setExtractedUsername] = useState(null);
+  const [extractedUsername, setExtractedUsername] = useState<string | null>(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -561,9 +561,9 @@ function _Chat() {
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
         });    
-        if (decodedToken.username) {
+      if (decodedToken.username) {
             setExtractedUsername(decodedToken.username);
-        }
+      }
       console.log('Extracted Username:', decodedToken.username);
       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
       console.log('Extracted pwd:', decodedToken.password);
