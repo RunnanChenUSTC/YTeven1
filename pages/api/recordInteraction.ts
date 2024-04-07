@@ -10,10 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ message: 'Method Not Allowed' });
   }
 
-  // Extract data from the request body
-  const { UserID, ButtonName, UserLogTime, GPTMessages, Note } = req.body;
-
-  // Database connection settings
   const connectionConfig = {
     host: 'mysqlserverless.cluster-cautknyafblq.us-east-1.rds.amazonaws.com',
     user: 'admin',
@@ -22,19 +18,37 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   };
 
   try {
-    // Connect to the database
     const connection = await mysql2.createConnection(connectionConfig);
 
-    const [result] = await connection.execute<mysql2.ResultSetHeader>(
-      'INSERT INTO user_log (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
-      [UserID, ButtonName, UserLogTime, GPTMessages, Note]
-    );
+    const { action, ...data } = req.body;
 
-    // Check if the insertion was successful
-    if (result.affectedRows > 0) {
-      res.status(200).json({ success: true, message: 'Data inserted successfully' });
+    if (action === 'insertInteraction') {
+      const { UserID, ButtonName, UserLogTime, GPTMessages, Note } = data;
+      const [result] = await connection.execute<mysql2.ResultSetHeader>(
+        'INSERT INTO user_log (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
+        [UserID, ButtonName, UserLogTime, GPTMessages, Note]
+      );
+
+      if (result.affectedRows > 0) {
+        res.status(200).json({ success: true, message: 'Data inserted successfully' });
+      } else {
+        throw new Error('Failed to insert data');
+      }
+    } else if (action === 'fetchUserID') {
+      const { username } = data;
+      const [rows] = await connection.execute(
+        'SELECT UserID FROM user WHERE UserName = ?',
+        [username]
+      );
+
+      if (rows.length > 0) {
+        const { UserID } = rows[0];
+        res.status(200).json({ success: true, UserID });
+      } else {
+        res.status(404).json({ success: false, message: 'User not found' });
+      }
     } else {
-      throw new Error('Failed to insert data');
+      res.status(400).json({ message: 'Invalid action' });
     }
   } catch (error) {
     console.error('Database connection or query failed:', error);
