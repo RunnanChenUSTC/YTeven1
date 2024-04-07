@@ -683,7 +683,7 @@ function _Chat() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        action: 'logUserMessage',
+        action: 'insertInteraction',
         UserID: UserID,
         ButtonName: "User Input",
         UserLogTime: new Date(),
