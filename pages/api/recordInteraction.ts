@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 // Import necessary modules and types
 //import jwt from 'jsonwebtoken';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import mysql from 'mysql2/promise';
+import mysql2 from 'mysql2/promise';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Check if the request method is POST
@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // Connect to the database
-    const connection = await mysql.createConnection(connectionConfig);
+    const connection = await mysql2.createConnection(connectionConfig);
 
     // Insert data into the database
     const [result,buff] = await connection.execute(
