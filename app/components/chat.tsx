@@ -94,6 +94,14 @@ import { useAllModels } from "../utils/hooks";
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
+const recordUserInteraction = async (UserID: any, ButtonName: any, UserLogTime: any, GPTMessages: any, Note: any) => {
+  const response = await fetch('/api/recordInteraction', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ UserID, ButtonName, UserLogTime, GPTMessages, Note }),
+  });
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();

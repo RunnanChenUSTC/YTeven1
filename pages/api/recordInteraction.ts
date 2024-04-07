@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const connection = await mysql2.createConnection(connectionConfig);
 
     const [result] = await connection.execute<mysql2.ResultSetHeader>(
-      'INSERT INTO UserLog (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
+      'INSERT INTO user_log (UserID, ButtonName, UserLogTime, GPTMessages, Note) VALUES (?, ?, ?, ?, ?)',
       [UserID, ButtonName, UserLogTime, GPTMessages, Note]
     );
 
