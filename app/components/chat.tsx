@@ -101,7 +101,7 @@ const recordUserInteraction = async (UserID: any, ButtonName: any, UserLogTime: 
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ UserID, ButtonName, UserLogTime, GPTMessages, Note }),
-  });
+  })};
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
