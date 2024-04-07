@@ -669,7 +669,7 @@ function _Chat() {
       },
       body: JSON.stringify({
         action: 'fetchUserID',
-        username: username5,
+        username: extractedUsername,
       }),
     });
    
