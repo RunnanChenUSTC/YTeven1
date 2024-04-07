@@ -549,14 +549,16 @@ function _Chat() {
   const updateAccessStore = useAccessStore((state) => state.update);
   const accessStore2 = useAccessStore();
   const username = accessStore2.accessCode;
+  const [visitor, setvisname] = useState<string | null>(null);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
-
+    
     if (token) {
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       if (decodedToken.password) {
+        setvisname(decodedToken.username || null);
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.password };
         });
@@ -689,6 +691,7 @@ function _Chat() {
   setPromptHints([]);
   if (!isMobileScreen) inputRef.current?.focus();
   setAutoScroll(true);
+  
   function splitText1(text: string, partLength: number): string[] {
     let parts: string[] = [];
     let index = 0;
