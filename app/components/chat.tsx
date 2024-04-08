@@ -569,7 +569,7 @@ function _Chat() {
       console.log('Extracted pwd:', decodedToken.password);
       }
     }
-    console.log('Extracted Username (extractedUsername state):', extractedUsername);
+    console.log('Extracted Username (extractedUsername state1):', extractedUsername);
   }, [updateAccessStore,extractedUsername]);
   useEffect(measure, [userInput]);
   // chat commands shortcuts
@@ -631,8 +631,6 @@ function _Chat() {
         console.error('Error fetching user data or recording interaction:', error);
       }
     };
-  
-    fetchData();
   }, [session.messages,hasSentEvent]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
