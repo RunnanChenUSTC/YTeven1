@@ -605,7 +605,7 @@ function _Chat() {
           const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
           const bot_respond = lastMessage.content;
           const botRespondTime = lastMessage.date;
-      
+          const Note = `Respond to user at ${userMessageTime}`;
           // Concatenate bot response and user question
           const GPTMessages1 = `Question: ${userQuestion} - Response: ${bot_respond}`;
           const response1 = await fetch('/api/recordInteraction', {
@@ -619,7 +619,7 @@ function _Chat() {
               ButtonName: "Bot response",
               UserLogTime: botRespondTime,
               GPTMessages: GPTMessages1,
-              Note: `Respond to user at ${userMessageTime}`
+              Note: Note
             }),
           });
           if (!response1.ok) {
@@ -633,7 +633,7 @@ function _Chat() {
       }
     };
     fetchData()
-  }, [session.messages,hasSentEvent]);
+  }, [session.messages,hasSentEvent,extractedUsername]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
