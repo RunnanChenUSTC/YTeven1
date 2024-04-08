@@ -575,10 +575,15 @@ function _Chat() {
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
+  const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   const [hasSentEvent, setHasSentEvent] = useState(false);
+   // Sync ref with the state
+  useEffect(() => {
+    hasRecordedInteractionRef.current = hasRecordedInteraction;
+  }, [hasRecordedInteraction]);
   useEffect(() => {
     const fetchData = async () => {
-      if (!extractedUsername||hasRecordedInteraction) return;
+      if (!extractedUsername||hasRecordedInteractionRef.current) return;
       try {
         // Fetch the UserID
         const botResponse = await fetch('/api/recordInteraction', {
