@@ -571,13 +571,14 @@ function _Chat() {
     }
     console.log('Extracted Username (extractedUsername state1):', extractedUsername);
   }, [updateAccessStore,extractedUsername]);
+  const [botResponseCount, setBotResponseCount] = useState(0);
   useEffect(measure, [userInput]);
   // chat commands shortcuts
-  const [hasSentEvent, setHasSentEvent] = useState(false);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
+  const [hasSentEvent, setHasSentEvent] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      if (!extractedUsername || hasRecordedInteraction) return;
+      if (!extractedUsername || hasRecordedInteraction|| botResponseCount >= 1) return;
       try {
         // Fetch the UserID
         const botResponse = await fetch('/api/recordInteraction', {
@@ -642,7 +643,8 @@ function _Chat() {
           if (!response1.ok) {
             throw new Error('Failed to insert bot msg');
           }
-  
+          setBotResponseCount(count => count + 1);
+          console.log('executetime:', botResponseCount)
           setHasSentEvent(true);
           setHasRecordedInteraction(true);
         }
@@ -651,7 +653,7 @@ function _Chat() {
       }
     };
     fetchData()
-  }, [session.messages,hasSentEvent,hasRecordedInteraction]);
+  }, [session.messages,hasSentEvent,hasRecordedInteraction,botResponseCount]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
