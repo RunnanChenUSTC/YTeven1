@@ -576,6 +576,7 @@ function _Chat() {
   const [hasSentEvent, setHasSentEvent] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
+      if (!extractedUsername) return;
       try {
         // Fetch the UserID
         const botResponse = await fetch('/api/recordInteraction', {
@@ -631,6 +632,7 @@ function _Chat() {
         console.error('Error fetching user data or recording interaction:', error);
       }
     };
+    fetchData()
   }, [session.messages,hasSentEvent]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
