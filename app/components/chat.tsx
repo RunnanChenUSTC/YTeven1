@@ -598,7 +598,7 @@ function _Chat() {
         console.log('UserID1:', UserID);
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
-        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
+        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
 
