@@ -643,7 +643,7 @@ function _Chat() {
           if (!response1.ok) {
             throw new Error('Failed to insert bot msg');
           }
-          setBotResponseCount(count => count + 1);
+          setBotResponseCount(1);
           console.log('executetime:', botResponseCount)
           setHasSentEvent(true);
           setHasRecordedInteraction(true);
@@ -651,6 +651,7 @@ function _Chat() {
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
       }
+      setBotResponseCount(1);
     };
     fetchData()
   }, [session.messages,hasSentEvent,hasRecordedInteraction,botResponseCount]);
