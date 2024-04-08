@@ -574,9 +574,10 @@ function _Chat() {
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const [hasSentEvent, setHasSentEvent] = useState(false);
+  const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      if (!extractedUsername) return;
+      if (!extractedUsername || hasRecordedInteraction) return;
       try {
         // Fetch the UserID
         const botResponse = await fetch('/api/recordInteraction', {
@@ -643,13 +644,14 @@ function _Chat() {
           }
   
           setHasSentEvent(true);
+          setHasRecordedInteraction(true);
         }
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
       }
     };
     fetchData()
-  }, [session.messages,hasSentEvent]);
+  }, [session.messages,hasSentEvent,hasRecordedInteraction]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
