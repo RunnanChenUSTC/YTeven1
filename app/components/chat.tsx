@@ -598,7 +598,7 @@ function _Chat() {
   
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
-        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
+        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           const lastUserMessage = userMessages[userMessages.length - 1];
           const userMessageTime = lastUserMessage ? lastUserMessage.date: 'Unknown';
