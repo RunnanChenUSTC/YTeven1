@@ -578,8 +578,7 @@ function _Chat() {
   const [hasSentEvent, setHasSentEvent] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
-      if (!extractedUsername || botResponseCount > 1) return;
-      if (botResponseCount === 1){
+      if (!extractedUsername) return;
       try {
         // Fetch the UserID
         const botResponse = await fetch('/api/recordInteraction', {
@@ -601,6 +600,8 @@ function _Chat() {
         console.log('UserID1:', UserID);
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
+        console.log("lastrole:", lastMessage.role)
+        console.log("lastMessagestatus:",lastMessage.streaming)
         if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
@@ -652,7 +653,7 @@ function _Chat() {
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
       }
-    }
+
     setBotResponseCount(count => count + 1);
     console.log('COUNT:', botResponseCount)
     };
