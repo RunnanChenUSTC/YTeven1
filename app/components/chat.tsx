@@ -594,8 +594,8 @@ function _Chat() {
           throw new Error('Failed to fetch user ID');
         }
   
-        const { UserID1 } = await botResponse.json();
-        console.log('UserID1:', UserID1);
+        const { UserID } = await botResponse.json();
+        console.log('UserID1:', UserID);
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
         if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
@@ -631,7 +631,7 @@ function _Chat() {
             },
             body: JSON.stringify({
               action: 'insertInteraction',
-              UserID: UserID1,
+              UserID: UserID,
               ButtonName: "Bot response",
               UserLogTime: botRespondTimeDate,
               GPTMessages: GPTMessages1,
