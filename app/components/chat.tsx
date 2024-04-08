@@ -595,7 +595,7 @@ function _Chat() {
         }
   
         const { UserID1 } = await botResponse.json();
-  
+        console.log('UserID1:', UserID1);
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
         if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
@@ -622,6 +622,7 @@ function _Chat() {
 
           // Concatenate bot response and user question
           const GPTMessages1 = `Question: ${userQuestion} - Response: ${bot_respond}`;
+          console.log('GPTMessages1', GPTMessages1);
           const response1 = await fetch('/api/recordInteraction', {
             method: 'POST',
             headers: {
