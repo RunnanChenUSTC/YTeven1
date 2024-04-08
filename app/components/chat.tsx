@@ -606,8 +606,8 @@ function _Chat() {
           console.log('lastUserMessage:', lastUserMessage);
 
           const userMessageTime = lastUserMessage ? lastUserMessage.date : 'Unknown';
-          console.log('userMessageTime:', userMessageTime);
-
+          const userMessageTimeDate = new Date(userMessageTime);
+          console.log(userMessageTimeDate);
           const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
           console.log('userQuestion:', userQuestion);
 
@@ -615,6 +615,7 @@ function _Chat() {
           console.log('bot_respond:', bot_respond);
 
           const botRespondTime = lastMessage ? lastMessage.date : 'Unknown';
+          const botRespondTimeDate = new Date(botRespondTime);
           console.log('botRespondTime:', botRespondTime);
 
           const Note = `Respond to user at ${userMessageTime}`;
@@ -632,7 +633,7 @@ function _Chat() {
               action: 'insertInteraction',
               UserID: UserID1,
               ButtonName: "Bot response",
-              UserLogTime: botRespondTime,
+              UserLogTime: botRespondTimeDate,
               GPTMessages: GPTMessages1,
               Note: Note
             }),
