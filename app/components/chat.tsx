@@ -633,7 +633,7 @@ function _Chat() {
     };
   
     fetchData();
-  }, [session.messages,extractedUsername,hasSentEvent]);
+  }, [session.messages,hasSentEvent]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
