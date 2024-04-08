@@ -601,7 +601,7 @@ function _Chat() {
         console.log('UserID1:', UserID);
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
-        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
+        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
 
@@ -644,7 +644,7 @@ function _Chat() {
           if (!response1.ok) {
             throw new Error('Failed to insert bot msg');
           }
-          setBotResponseCount(1);
+          setBotResponseCount(count => count + 1);
           console.log('executetime:', botResponseCount)
           setHasSentEvent(true);
           setHasRecordedInteraction(true);
