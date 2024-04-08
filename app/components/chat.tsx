@@ -575,57 +575,65 @@ function _Chat() {
   // chat commands shortcuts
   const [hasSentEvent, setHasSentEvent] = useState(false);
   useEffect(() => {
-    // 获取最新的消息
-    const lastMessage = session.messages[session.messages.length - 1];
-
-    // 检查是否是机器人的回答
-   if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
-      // 此处执行您需要的操作，例如发送 Google Analytics 事件
-     // 定义分割逻辑
-   function splitText(text: string, partLength: number): string[] {
-          let parts: string[] = [];
-          let index = 0;
+    const fetchData = async () => {
+      try {
+        // Fetch the UserID
+        const botResponse = await fetch('/api/recordInteraction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: 'fetchUserID',
+            username: extractedUsername,
+          }),
+        });
+  
+        if (!botResponse.ok) {
+          throw new Error('Failed to fetch user ID');
+        }
+  
+        const { UserID1 } = await botResponse.json();
+  
+        // Now that you have the UserID, record the user interaction
+        const lastMessage = session.messages[session.messages.length - 1];
+        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasSentEvent) {
+          const userMessages = session.messages.filter(message => message.role === 'user');
+          const lastUserMessage = userMessages[userMessages.length - 1];
+          const userMessageTime = lastUserMessage ? lastUserMessage.date: 'Unknown';
+          const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
+          const bot_respond = lastMessage.content;
+          const botRespondTime = lastMessage.date;
       
-          // 循环直到文本结束
-          while(index < text.length) {
-              parts.push(text.substring(index, Math.min(index + partLength, text.length)));
-              index += partLength;
+          // Concatenate bot response and user question
+          const GPTMessages1 = `Question: ${userQuestion} - Response: ${bot_respond}`;
+          const response1 = await fetch('/api/recordInteraction', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              action: 'insertInteraction',
+              UserID: UserID1,
+              ButtonName: "Bot response",
+              UserLogTime: botRespondTime,
+              GPTMessages: GPTMessages1,
+              Note: `Respond to user at ${userMessageTime}`
+            }),
+          });
+          if (!response1.ok) {
+            throw new Error('Failed to insert bot msg');
           }
-        // 确保结果数组有5个元素，不足部分填充为空字符串
-          while(parts.length < 7) {
-              parts.push("empty");
-          }
-      
-          return parts.slice(0, 7); // 只返回前四个部分
+  
+          setHasSentEvent(true);
+        }
+      } catch (error) {
+        console.error('Error fetching user data or recording interaction:', error);
       }
-      const timestamp1 = new Date();
-     // 查找最近的用户消息
-      const userMessages = session.messages.filter(message => message.role === 'user');
-      const lastUserMessage = userMessages[userMessages.length - 1];
-      const userMessageTime = lastUserMessage.date
-      const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
-      const eventParametersString = `user_id: ${username},user_question: ${userQuestion}`;
-      const answer_time = ` ${timestamp1} `;
-      const bot_respond = `${lastMessage.content} `;
-      const botrespondtime = lastMessage.date
-      // 分割文本
-      const [part1, part2, part3, part4, part5, part6, part7] = splitText(bot_respond, 75);
-      window.gtag('event', 'bot_message', {
-        'event_category': 'Chat',
-        'event_label': 'Bot Response',
-        'user_question': eventParametersString,
-        'bot_respond1': part1,
-        'bot_respond2': part2,
-        'bot_respond3': part3,
-        'bot_respond4': part4,
-        'bot_respond5': part5,
-        'bot_respond6': part6,
-        'bot_respond7': part7,
-        'answer_time': answer_time
-      });
-     setHasSentEvent(true)
-    }
-  }, [session.messages,hasSentEvent]);
+    };
+  
+    fetchData();
+  }, [session.messages,extractedUsername,hasSentEvent]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
