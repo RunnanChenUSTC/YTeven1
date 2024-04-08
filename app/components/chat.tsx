@@ -598,14 +598,28 @@ function _Chat() {
   
         // Now that you have the UserID, record the user interaction
         const lastMessage = session.messages[session.messages.length - 1];
-        if (lastMessage && lastMessage.role === 'assistant' && lastMessage.streaming) {
+        if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
+          console.log('userMessages:', userMessages);
+
           const lastUserMessage = userMessages[userMessages.length - 1];
-          const userMessageTime = lastUserMessage ? lastUserMessage.date: 'Unknown';
+          console.log('lastUserMessage:', lastUserMessage);
+
+          const userMessageTime = lastUserMessage ? lastUserMessage.date : 'Unknown';
+          console.log('userMessageTime:', userMessageTime);
+
           const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
-          const bot_respond = lastMessage.content;
-          const botRespondTime = lastMessage.date;
+          console.log('userQuestion:', userQuestion);
+
+          const bot_respond = lastMessage ? lastMessage.content : 'Unknown';
+          console.log('bot_respond:', bot_respond);
+
+          const botRespondTime = lastMessage ? lastMessage.date : 'Unknown';
+          console.log('botRespondTime:', botRespondTime);
+
           const Note = `Respond to user at ${userMessageTime}`;
+          console.log('Note:', Note);
+
           // Concatenate bot response and user question
           const GPTMessages1 = `Question: ${userQuestion} - Response: ${bot_respond}`;
           const response1 = await fetch('/api/recordInteraction', {
