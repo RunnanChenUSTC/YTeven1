@@ -581,6 +581,7 @@ function _Chat() {
   useEffect(() => {
     hasRecordedInteractionRef.current = hasRecordedInteraction;
   }, [hasRecordedInteraction]);
+  const lastInsertedRecordRef = useRef(null);
   useEffect(() => {
     const fetchData = async () => {
       if (!extractedUsername||hasRecordedInteractionRef.current) return;
@@ -633,31 +634,34 @@ function _Chat() {
 
           // Concatenate bot response and user question
           const GPTMessages1 = `Question: ${userQuestion} - Response: ${bot_respond}`;
-          console.log('GPTMessages1', GPTMessages1);
-          const response1 = await fetch('/api/recordInteraction', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              action: 'insertInteraction',
-              UserID: UserID,
-              ButtonName: "Bot response",
-              UserLogTime: botRespondTimeDate,
-              GPTMessages: GPTMessages1,
-              Note: Note
-            }),
-          });
-          if (!response1.ok) {
-            throw new Error('Failed to insert bot msg');
-          }
-          if(response1.ok){
-          setHasRecordedInteraction(true);
-          }
-          setBotResponseCount(count => count + 1);
-          console.log('executetime:', botResponseCount)
-          setHasSentEvent(true);
-          
+          // Construct the new record object
+          const newRecord = {
+            UserID,
+            ButtonName: "Bot response",
+            UserLogTime: botRespondTime,
+            GPTMessages: `Question: ${userQuestion} - Response: ${bot_respond}`,
+            Note,
+          };
+
+          // Check if the new record is different from the last inserted record
+          if (JSON.stringify(lastInsertedRecordRef.current) !== JSON.stringify(newRecord)) {
+            const response1 = await fetch('/api/recordInteraction', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(newRecord),
+            });
+
+            if (!response1.ok) {
+              throw new Error('Failed to insert bot message');
+            }
+            
+            if(response1.ok){
+            // Update the ref with the new record
+            lastInsertedRecordRef.current = newRecord;
+            setHasRecordedInteraction.current = true;}
+          }        
         }
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
