@@ -646,7 +646,7 @@ function _Chat() {
           const newRecord = {
             UserID,
             ButtonName: "Bot response",
-            UserLogTime: botRespondTime,
+            UserLogTime: botRespondTimeDate,
             GPTMessages: `Question: ${userQuestion} - Response: ${bot_respond}`,
             Note,
           };
