@@ -3,7 +3,7 @@
 import {jwtDecode} from 'jwt-decode';
 import { JwtPayload } from 'jwt-decode';
 // Define a new interface that includes the expected properties from the JWT payload
-interface MyTokenPayload extends JwtPayload {
+interface MyTokenPayload extends JwtPayload {fref
   username?: string;
   experimentGroup?: string;
   password: string;
@@ -583,9 +583,9 @@ function _Chat() {
   }, [hasRecordedInteraction]);
   // Define the structure of the record
   interface RecordType {
-    UserID: any;
+    UserID: number;
     ButtonName: string;
-    UserLogTime: Date | string;
+    UserLogTime: Date;
     GPTMessages: string;
     Note: string;
   }
