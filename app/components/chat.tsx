@@ -3,7 +3,7 @@
 import {jwtDecode} from 'jwt-decode';
 import { JwtPayload } from 'jwt-decode';
 // Define a new interface that includes the expected properties from the JWT payload
-interface MyTokenPayload extends JwtPayload {fref
+interface MyTokenPayload extends JwtPayload {
   username?: string;
   experimentGroup?: string;
   password: string;
