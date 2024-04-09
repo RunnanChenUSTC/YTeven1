@@ -581,7 +581,15 @@ function _Chat() {
   useEffect(() => {
     hasRecordedInteractionRef.current = hasRecordedInteraction;
   }, [hasRecordedInteraction]);
-  const lastInsertedRecordRef = useRef(null);
+  // Define the structure of the record
+  interface RecordType {
+    UserID: any;
+    ButtonName: string;
+    UserLogTime: Date | string;
+    GPTMessages: string;
+    Note: string;
+  }
+  const lastInsertedRecordRef = useRef<RecordType | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       if (!extractedUsername||hasRecordedInteractionRef.current) return;
