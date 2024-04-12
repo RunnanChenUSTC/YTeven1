@@ -628,7 +628,7 @@ function _Chat() {
         console.log("lastrole:", lastMessage.role)
         console.log("lastMessagestatus:",lastMessage.streaming)
         console.log("currentsent:",hasRecordedInteractionRef.current)
-        if (lastMessage.content !== ''&&lastMessageStreamingRef.current === true && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasRecordedInteractionRef.current) {
+        if (lastMessage.content !== ''&&lastMessageStreamingRef.current === true && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
 
