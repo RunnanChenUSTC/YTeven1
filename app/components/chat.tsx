@@ -184,7 +184,7 @@ function PromptToast(props: {
 function useSubmitHandler() {
   const config = useAppConfig();
   const submitKey = config.submitKey;
-  const isComposing = useRef(false);
+  const isComposing = (false);
   useEffect(() => {
     const onCompositionStart = () => {
       isComposing.current = true;
@@ -577,6 +577,14 @@ function _Chat() {
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   const [hasSentEvent, setHasSentEvent] = useState(false);
+  const lastMessageStreamingRef = useRef();
+  useEffect(() => {
+    const lastMessage = session.messages[session.messages.length - 1];
+    if (lastMessage) {
+      lastMessageStreamingRef.current = lastMessage.streaming;
+    }
+  }, [session.messages]);
+
    // Sync ref with the state
   useEffect(() => {
     hasRecordedInteractionRef.current = hasRecordedInteraction;
@@ -620,7 +628,7 @@ function _Chat() {
         console.log("lastrole:", lastMessage.role)
         console.log("lastMessagestatus:",lastMessage.streaming)
         console.log("currentsent:",hasRecordedInteractionRef.current)
-        if (lastMessage.content !== '' && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasRecordedInteractionRef.current) {
+        if (lastMessage.content !== ''&&lastMessageStreamingRef.current === true && lastMessage.role === 'assistant' && !lastMessage.streaming && !hasRecordedInteractionRef.current) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
 
@@ -673,7 +681,8 @@ function _Chat() {
             // Update the ref with the new record
             lastInsertedRecordRef.current = newRecord;
             setHasRecordedInteraction(true);}
-          }        
+          }
+          lastMessageStreamingRef.current = lastMessage.streaming;
         }
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
