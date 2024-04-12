@@ -687,8 +687,9 @@ function _Chat() {
         console.error('Error fetching user data or recording interaction:', error);
       }
     setIsFetching(false);
-    if (lastMessage) {
-      lastMessageStreamingRef.current = lastMessage.streaming;
+    const lastMessage1 = session.messages[session.messages.length - 1];
+    if (lastMessage1) {
+      lastMessageStreamingRef.current = lastMessage1.streaming;
     }
     setBotResponseCount(count => count + 1);
     console.log('COUNT:', botResponseCount)
