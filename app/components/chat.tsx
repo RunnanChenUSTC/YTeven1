@@ -683,14 +683,11 @@ function _Chat() {
             setHasRecordedInteraction(true);}
           }
         }
+      lastMessageStreamingRef.current = lastMessage.streaming;
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
       }
     setIsFetching(false);
-    const lastMessage1 = session.messages[session.messages.length - 1];
-    if (lastMessage1) {
-      lastMessageStreamingRef.current = lastMessage1.streaming;
-    }
     setBotResponseCount(count => count + 1);
     console.log('COUNT:', botResponseCount)
     };
