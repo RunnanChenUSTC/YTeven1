@@ -681,8 +681,8 @@ function _Chat() {
             // Update the ref with the new record
             lastInsertedRecordRef.current = newRecord;
             setHasRecordedInteraction(true);}
+            lastMessageStreamingRef.current = lastMessage.streaming;
           }
-          lastMessageStreamingRef.current = lastMessage.streaming;
         }
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
