@@ -592,6 +592,7 @@ function _Chat() {
   }
   const lastInsertedRecordRef = useRef<RecordType | null>(null);
   const [isFetching, setIsFetching] = useState(false);
+  const lastMessage = session.messages[session.messages.length - 1];
   useEffect(() => {
     const fetchData = async () => {
       if (!extractedUsername||hasRecordedInteractionRef.current) return;
@@ -683,7 +684,7 @@ function _Chat() {
     console.log('COUNT:', botResponseCount)
     };
     fetchData()
-  }, [session.messages]);
+  }, [lastMessage]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
