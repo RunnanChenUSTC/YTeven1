@@ -680,7 +680,7 @@ function _Chat() {
             if(response1.ok){
             // Update the ref with the new record
             lastInsertedRecordRef.current = newRecord;
-            setHasRecordedInteraction(true);
+            setHasRecordedInteraction(true);}
           }
         }
       } catch (error) {
