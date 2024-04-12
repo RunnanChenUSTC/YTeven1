@@ -585,6 +585,7 @@ function _Chat() {
     const userMessages = session.messages.filter(message => message.role === 'user');
     const lastUserMessage = userMessages[userMessages.length - 1];
     const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
+    const userMessageTime = lastUserMessage ? lastUserMessage.date : 'Unknown';
 
     // 第一步：获取UserID
     const fetchUserID = async () => {
@@ -615,7 +616,7 @@ function _Chat() {
         ButtonName: "Bot Response",
         UserLogTime: new Date().toISOString(),
         GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
-        Note: "Bot sent a response",
+        Note: `Respond to user at ${userMessageTime}`,
       };
 
       return fetch('/api/recordInteraction', {
