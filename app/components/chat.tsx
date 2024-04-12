@@ -580,7 +580,7 @@ function _Chat() {
   const lastMessageStreamingRef = useRef<boolean | undefined>(undefined);
   
   const [streamingFalseCount, setStreamingFalseCount] = useState(0);
-  const lastMessage3 = session.messages[session.messages.length - 1];
+  const lastMessage = session.messages[session.messages.length - 1];
   useEffect(() => {
     const lastMessage = session.messages[session.messages.length - 1];
     if (lastMessage) {
@@ -707,7 +707,7 @@ function _Chat() {
     console.log('COUNT:', botResponseCount)
     };
     fetchData()
-  }, [lastMessage3?.streaming]);
+  }, [lastMessage?.streaming]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
