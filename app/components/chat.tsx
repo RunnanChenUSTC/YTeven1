@@ -681,7 +681,7 @@ function _Chat() {
     console.log('COUNT:', botResponseCount)
     };
     fetchData()
-  }, [session.messages,hasSentEvent,hasRecordedInteraction,botResponseCount]);
+  }, [session.messages]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
