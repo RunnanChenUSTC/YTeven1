@@ -577,7 +577,7 @@ function _Chat() {
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   const [hasSentEvent, setHasSentEvent] = useState(false);
-  const lastMessageStreamingRef = useRef();
+  const lastMessageStreamingRef = useRef<boolean | undefined>(undefined);
   useEffect(() => {
     const lastMessage = session.messages[session.messages.length - 1];
     if (lastMessage && lastMessage.streaming !== undefined) {
