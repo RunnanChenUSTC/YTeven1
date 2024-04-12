@@ -680,14 +680,16 @@ function _Chat() {
             if(response1.ok){
             // Update the ref with the new record
             lastInsertedRecordRef.current = newRecord;
-            setHasRecordedInteraction(true);}
-            lastMessageStreamingRef.current = lastMessage.streaming;
+            setHasRecordedInteraction(true);
           }
         }
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
       }
     setIsFetching(false);
+    if (lastMessage) {
+      lastMessageStreamingRef.current = lastMessage.streaming;
+    }
     setBotResponseCount(count => count + 1);
     console.log('COUNT:', botResponseCount)
     };
