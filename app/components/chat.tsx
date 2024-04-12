@@ -184,7 +184,7 @@ function PromptToast(props: {
 function useSubmitHandler() {
   const config = useAppConfig();
   const submitKey = config.submitKey;
-  const isComposing = (false);
+  const isComposing = useRef(false);
   useEffect(() => {
     const onCompositionStart = () => {
       isComposing.current = true;
