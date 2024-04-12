@@ -578,6 +578,20 @@ function _Chat() {
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   const [hasSentEvent, setHasSentEvent] = useState(false);
   const lastMessageStreamingRef = useRef<boolean | undefined>(undefined);
+  
+  const [streamingFalseCount, setStreamingFalseCount] = useState(0);
+  useEffect(() => {
+    const lastMessage = session.messages[session.messages.length - 1];
+    if (lastMessage) {
+      if (!lastMessage.streaming) {
+        // 当 streaming 从 true 变为 false 时，增加计数器
+        setStreamingFalseCount(count => count + 1);
+      } else {
+        // 当 streaming 重新变为 true 时，重置计数器
+        setStreamingFalseCount(0);
+      }
+    }
+  }, [session.messages]);
   useEffect(() => {
     const lastMessage = session.messages[session.messages.length - 1];
     if (lastMessage && lastMessage.streaming !== undefined) {
@@ -627,8 +641,8 @@ function _Chat() {
         const lastMessage = session.messages[session.messages.length - 1];
         console.log("lastrole:", lastMessage.role)
         console.log("lastMessagestatus:",lastMessage.streaming)
-        console.log("currentsent:",lastMessageStreamingRef.current)
-        if (lastMessage.content !== ''&&lastMessageStreamingRef.current === true && lastMessage.role === 'assistant' && !lastMessage.streaming) {
+        console.log("currentsent:",streamingFalseCount)
+        if (lastMessage.content !== ''&&streamingFalseCount === 1 && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
 
