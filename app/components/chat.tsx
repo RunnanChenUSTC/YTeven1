@@ -583,6 +583,7 @@ function _Chat() {
   }, [hasRecordedInteraction]);
   // Define the structure of the record
   interface RecordType {
+    action: string;
     UserID: number;
     ButtonName: string;
     UserLogTime: Date;
@@ -646,6 +647,7 @@ function _Chat() {
           const GPTMessages1 = `Question: ${userQuestion} - Response: ${bot_respond}`;
           // Construct the new record object
           const newRecord = {
+            action:'insertInteraction',
             UserID,
             ButtonName: "Bot response",
             UserLogTime: botRespondTimeDate,
