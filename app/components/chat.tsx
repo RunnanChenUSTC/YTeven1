@@ -590,9 +590,11 @@ function _Chat() {
     Note: string;
   }
   const lastInsertedRecordRef = useRef<RecordType | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       if (!extractedUsername||hasRecordedInteractionRef.current) return;
+      setIsFetching(true);
       try {
         // Fetch the UserID
         const botResponse = await fetch('/api/recordInteraction', {
@@ -674,6 +676,7 @@ function _Chat() {
       } catch (error) {
         console.error('Error fetching user data or recording interaction:', error);
       }
+    setIsFetching(false);
     setBotResponseCount(count => count + 1);
     console.log('COUNT:', botResponseCount)
     };
