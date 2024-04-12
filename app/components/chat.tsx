@@ -580,7 +580,7 @@ function _Chat() {
   const lastMessageStreamingRef = useRef<boolean | undefined>(undefined);
   
   const [streamingFalseCount, setStreamingFalseCount] = useState(0);
-  const lastMessage = session.messages[session.messages.length - 1];
+  // const lastMessage = session.messages[session.messages.length - 1];
   useEffect(() => {
     const lastMessage = session.messages[session.messages.length - 1];
     if (lastMessage) {
