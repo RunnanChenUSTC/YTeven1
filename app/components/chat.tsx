@@ -643,7 +643,7 @@ function _Chat() {
         console.log("lastrole:", lastMessage.role)
         console.log("lastMessagestatus:",lastMessage.streaming)
         console.log("currentsent:",streamingFalseCount)
-        if (lastMessage.content !== ''&& lastMessage.role === 'assistant' && !lastMessage.streaming) {
+        if (lastMessage.content !== ''&&streamingFalseCount === 1 && lastMessage.role === 'assistant' && !lastMessage.streaming) {
           const userMessages = session.messages.filter(message => message.role === 'user');
           console.log('userMessages:', userMessages);
 
@@ -707,7 +707,7 @@ function _Chat() {
     console.log('COUNT:', botResponseCount)
     };
     fetchData()
-  }, [lastMessage?.streaming]);
+  }, [[session.messages]]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
