@@ -683,7 +683,7 @@ function _Chat() {
     console.log('COUNT:', botResponseCount)
     };
     fetchData()
-  }, [session.messages]);
+  }, [session.messages,session.messages[session.messages.length - 1].streaming]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
