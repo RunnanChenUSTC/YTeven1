@@ -585,7 +585,7 @@ function _Chat() {
     const userMessages = session.messages.filter(message => message.role === 'user');
     const lastUserMessage = userMessages[userMessages.length - 1];
     const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
-    const userMessageTime = lastUserMessage ? lastUserMessage.date.toISOString(): 'Unknown';
+    const userMessageTime = lastUserMessage ? lastUserMessage.date: 'Unknown';
 
     // 第一步：获取UserID
     const fetchUserID = async () => {
@@ -614,7 +614,7 @@ function _Chat() {
         action: 'insertInteraction',
         UserID: UserID,
         ButtonName: "Bot Response",
-        UserLogTime: new Date().toISOString(),
+        UserLogTime: new Date().toLocaleString("en-US", { timeZone: "Asia/Shanghai" }),
         GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
         Note: `Respond to user at ${userMessageTime}`,
       };
