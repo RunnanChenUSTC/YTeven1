@@ -704,7 +704,7 @@ function _Chat() {
         ButtonName: "User Input",
         UserLogTime: new Date(),
         GPTMessages: userInput,
-        Note: "User sent a message"
+        Note: `user sent a message at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
       }),
     });
     if (!response.ok) {
