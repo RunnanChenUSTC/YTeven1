@@ -491,6 +491,8 @@ function _Chat() {
   const [showExport, setShowExport] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [userInput, setUserInput] = useState("");
+  const [autoSubmitted, setAutoSubmitted] = useState(false);
+  // Effect to extract query from URL and submit automatically
   const [isLoading, setIsLoading] = useState(false);
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollDomToBottom } = useScrollToBottom();
@@ -751,7 +753,23 @@ function _Chat() {
   setHasSentEvent(false);
 };
 
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const question = params.get("question");
+  const token = params.get('token');
 
+  if (token) {
+    const decoded = jwtDecode(token);
+    if (decoded && decoded.username) {
+      setExtractedUsername(decoded.username);
+    }
+  }
+
+  if (question && !autoSubmitted) {
+    doSubmit(decodeURIComponent(question));
+    setAutoSubmitted(true);
+  }
+}, [autoSubmitted]);
   const onPromptSelect = (prompt: RenderPompt) => {
     setTimeout(() => {
       setPromptHints([]);
