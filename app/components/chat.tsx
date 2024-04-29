@@ -94,6 +94,12 @@ import { useAllModels } from "../utils/hooks";
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
+const chatStore = useChatStore();
+  const session = chatStore.currentSession();
+
+  useEffect(() => {
+    console.log("Session messages:", session.messages);
+  }, [session.messages]);
 const recordUserInteraction = async (UserID: any, ButtonName: any, UserLogTime: any, GPTMessages: any, Note: any) => {
   const response = await fetch('/api/recordInteraction', {
     method: 'POST',
@@ -102,6 +108,7 @@ const recordUserInteraction = async (UserID: any, ButtonName: any, UserLogTime: 
     },
     body: JSON.stringify({ UserID, ButtonName, UserLogTime, GPTMessages, Note }),
   })};
+
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();
   const session = chatStore.currentSession();
