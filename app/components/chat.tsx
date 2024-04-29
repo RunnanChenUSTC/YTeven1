@@ -758,14 +758,15 @@ function _Chat() {
   setHasSentEvent(false);
 };
   // 自动处理URL中的question参数
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const question = params.get("question");
-    if (question && !autoSubmitted) {
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const question = params.get("question");
+  console.log("Received question from URL:", question);
+  if (question && !autoSubmitted) {
       doSubmit(decodeURIComponent(question));
       setAutoSubmitted(true);
-    }
-  }, [autoSubmitted, doSubmit])
+  }
+}, [autoSubmitted, doSubmit])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
