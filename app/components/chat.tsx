@@ -758,23 +758,23 @@ function _Chat() {
   setHasSentEvent(false);
 };
 
-useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const question = params.get("question");
-  // const token = params.get('token');
+// useEffect(() => {
+//   const params = new URLSearchParams(window.location.search);
+//   const question = params.get("question");
+//   // const token = params.get('token');
 
-  // if (token) {
-  //   const decoded = jwtDecode(token);
-  //   if (decoded && decoded.username) {
-  //     setExtractedUsername(decoded.username);
-  //   }
-  // }
+//   // if (token) {
+//   //   const decoded = jwtDecode(token);
+//   //   if (decoded && decoded.username) {
+//   //     setExtractedUsername(decoded.username);
+//   //   }
+//   // }
 
-  if (question && !autoSubmitted) {
-    doSubmit(decodeURIComponent(question));
-    setAutoSubmitted(true);
-  }
-}, [autoSubmitted]);
+//   if (question && !autoSubmitted) {
+//     doSubmit(decodeURIComponent(question));
+//     setAutoSubmitted(true);
+//   }
+// }, [autoSubmitted]);
   const onPromptSelect = (prompt: RenderPompt) => {
     setTimeout(() => {
       setPromptHints([]);
