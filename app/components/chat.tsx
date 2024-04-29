@@ -757,7 +757,15 @@ function _Chat() {
   window.gtag('event', 'user_access', {  'userrec': userrec });
   setHasSentEvent(false);
 };
-
+  // 自动处理URL中的question参数
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const question = params.get("question");
+    if (question && !autoSubmitted) {
+      doSubmit(decodeURIComponent(question));
+      setAutoSubmitted(true);
+    }
+  }, [autoSubmitted, doSubmit])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
