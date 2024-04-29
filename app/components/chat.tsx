@@ -94,12 +94,6 @@ import { useAllModels } from "../utils/hooks";
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
-const chatStore = useChatStore();
-  const session = chatStore.currentSession();
-
-  useEffect(() => {
-    console.log("Session messages:", session.messages);
-  }, [session.messages]);
 const recordUserInteraction = async (UserID: any, ButtonName: any, UserLogTime: any, GPTMessages: any, Note: any) => {
   const response = await fetch('/api/recordInteraction', {
     method: 'POST',
@@ -508,6 +502,10 @@ function _Chat() {
   const navigate = useNavigate();
   // prompt hints
   const promptStore = usePromptStore();
+
+  useEffect(() => {
+    console.log("Session messages:", session.messages);
+  }, [session.messages]);
   const [promptHints, setPromptHints] = useState<RenderPompt[]>([]);
   const onSearch = useDebouncedCallback(
     (text: string) => {
