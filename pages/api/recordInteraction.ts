@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else if (action === 'fetchUserID') {
       const { username } = data;
       const [rows] = await connection.execute<RowDataPacket[]>(
-        'SELECT UserID FROM user WHERE UserName = ?', [username]
+        'SELECT UserID FROM user_copy1 WHERE UserName = ?', [username]
       );
 
       if (rows.length > 0) {
