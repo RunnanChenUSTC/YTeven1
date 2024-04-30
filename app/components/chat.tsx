@@ -766,7 +766,7 @@ useEffect(() => {
       doSubmit(decodeURIComponent(question));
       setAutoSubmitted(true);
   }
-}, [autoSubmitted])
+}, [])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
