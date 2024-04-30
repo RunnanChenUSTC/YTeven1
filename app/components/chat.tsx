@@ -762,11 +762,11 @@ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const question = params.get("question");
   console.log("Received question from URL:", question);
-  if (question && !autoSubmitted) {
+  if (question && !autoSubmitted && extractedUsername) {
       doSubmit(decodeURIComponent(question));
       setAutoSubmitted(true);
   }
-}, [])
+}, [autoSubmitted, extractedUsername])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
