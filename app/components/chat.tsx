@@ -759,36 +759,35 @@ function _Chat() {
 };
   // 自动处理URL中的question参数
 const [questionContent, setQuestionContent] = useState('');
+const fetchQuestion = async (questionId: string) => {
+  try {
+    const response = await fetch('/api/fetchQuestion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ questionId })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch question');
+    }
+
+    const data = await response.json();
+    if (data.success && data.content) {
+      console.log("Fetched question content:", data.content);
+      setQuestionContent(data.content);  // 更新状态
+    } else {
+      console.error('Failed to fetch question:', data.message);
+    }
+  } catch (error) {
+    console.error('Request failed:', error);
+  }
+};
 useEffect(() => {
- 
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
   console.log("Received question from URL:", questionid);
-  const fetchQuestion = async (questionid) => {
-    try {
-      const res = await fetch('/api/fetchQuestion', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'fetchQuestion',
-          questionId: questionid,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setQuestionContent(data.Content);
-        console.log('Question Content:', data.question.Content);
-        console.log('Experiment Time:', data.question.ExperimentTime);
-        console.log('Created Time:', data.question.CreatedTime);
-      } else {
-        console.error('Error:', data.message);
-      }
-    } catch (error) {
-      console.error('Request failed:', error);
-    }
-  };
   if (questionContent && !autoSubmitted && extractedUsername) {
       doSubmit(decodeURIComponent(questionContent));
       setAutoSubmitted(true);
