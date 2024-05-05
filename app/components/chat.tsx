@@ -765,7 +765,7 @@ useEffect(() => {
   console.log("Received question from URL:", questionid);
   const fetchQuestion = async (questionid) => {
     try {
-      const res = await fetch('/api/path-to-your-api', {
+      const res = await fetch('/api/fetchQuestion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
