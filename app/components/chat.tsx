@@ -758,8 +758,9 @@ function _Chat() {
   setHasSentEvent(false);
 };
   // 自动处理URL中的question参数
+const [questionContent, setQuestionContent] = useState('');
 useEffect(() => {
-  const [questionContent, setQuestionContent] = useState('');
+ 
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
   console.log("Received question from URL:", questionid);
