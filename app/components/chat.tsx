@@ -759,11 +759,37 @@ function _Chat() {
 };
   // 自动处理URL中的question参数
 useEffect(() => {
+  const [questionContent, setQuestionContent] = useState('');
   const params = new URLSearchParams(window.location.search);
-  const question = params.get("question");
-  console.log("Received question from URL:", question);
-  if (question && !autoSubmitted && extractedUsername) {
-      doSubmit(decodeURIComponent(question));
+  const questionid = params.get("QuestionID");
+  console.log("Received question from URL:", questionid);
+  const fetchQuestion = async (questionid) => {
+    try {
+      const res = await fetch('/api/path-to-your-api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'fetchQuestion',
+          questionId: questionid,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setQuestionContent(data.Content);
+        console.log('Question Content:', data.question.Content);
+        console.log('Experiment Time:', data.question.ExperimentTime);
+        console.log('Created Time:', data.question.CreatedTime);
+      } else {
+        console.error('Error:', data.message);
+      }
+    } catch (error) {
+      console.error('Request failed:', error);
+    }
+  };
+  if (questionContent && !autoSubmitted && extractedUsername) {
+      doSubmit(decodeURIComponent(questionContent));
       setAutoSubmitted(true);
   }
 }, [autoSubmitted, extractedUsername])
