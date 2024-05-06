@@ -779,9 +779,9 @@ const fetchQuestion = async (questionId: string) => {
     }
 
     const data = await response.json();
-    if (data.success && data.content) {
+    if (data.success && data.Content) {
       console.log("Fetched question content:", data.content);
-      setQuestionContent(data.content);  // 更新状态
+      setQuestionContent(data.Content);  // 更新状态
     } else {
       console.error('Failed to fetch question:', data.message);
     }
