@@ -782,6 +782,7 @@ const fetchQuestion = async (questionId: string) => {
     if (data.success) {
       console.log("Fetched question content:", data.question.Content);
       setQuestionContent(data.question.Content);  // 更新状态
+      return data.question.Content;
     } else {
       console.error('Failed to fetch question:', data.message);
     }
@@ -793,12 +794,19 @@ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
   console.log("Received question from URL:", questionid);
-  if (questionid) {
-    fetchQuestion(questionid);
-  }
-  if (questionContent && !autoSubmitted && extractedUsername) {
-      doSubmit(decodeURIComponent(questionContent));
-      setAutoSubmitted(true);
+  // if (questionid) {
+  //   fetchQuestion(questionid).then(content => {
+  //     // 可以在这里使用获取到的问题内容
+  //     console.log('Fetched Content:', content);
+  //   });
+  // }
+  if (questionid && !autoSubmitted && extractedUsername) {
+      fetchQuestion(questionid).then(Content => {
+        // 可以在这里使用获取到的问题内容
+        doSubmit(decodeURIComponent(Content));
+        setAutoSubmitted(true);
+        console.log('Fetched Content:', Content);
+      });
   }
 }, [autoSubmitted, extractedUsername])
 // useEffect(() => {
