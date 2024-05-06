@@ -771,7 +771,7 @@ const fetchQuestion = async (questionId: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ action: 'fetchQuestion', questionIdInt })
+      body: JSON.stringify({ action: 'fetchQuestion', questionId: questionIdInt })
     });
 
     if (!response.ok) {
