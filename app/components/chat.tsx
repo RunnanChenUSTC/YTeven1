@@ -662,7 +662,7 @@ function _Chat() {
   const userId = accessStore1.accessCode;
   const accessStore3 = useAccessStore();
   const userAccess = accessStore3.accessCode;
-  const doSubmit = async (userInput: string) => {
+  const doSubmit = async (userInput: string, questionId?: number) => {
     if (userInput.trim() === "") return;
     // Fetch UserID based on the username
     const userResponse = await fetch('/api/recordInteraction', {
@@ -680,19 +680,31 @@ function _Chat() {
       throw new Error('Failed to fetch user ID');
     }
     const { UserID } = await userResponse.json();
+    const interactionData: {
+      action: string;
+      UserID: any; // 考虑使用具体的类型而不是 any
+      ButtonName: string;
+      UserLogTime: Date;
+      GPTMessages: string;
+      Note: string;
+      QuestionID?: number; // 可选的 QuestionID
+  } ={
+      action: 'insertInteraction',
+      UserID: UserID,
+      ButtonName: "User Input",
+      UserLogTime: new Date(),
+      GPTMessages: userInput,
+      Note: `user sent a message at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
+    }
+    if (questionId) {
+      interactionData['QuestionID'] = questionId;
+    }
     const response = await fetch('/api/recordInteraction', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        action: 'insertInteraction',
-        UserID: UserID,
-        ButtonName: "User Input",
-        UserLogTime: new Date(),
-        GPTMessages: userInput,
-        Note: `user sent a message at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
-      }),
+      body: JSON.stringify(interactionData),
     });
     if (!response.ok) {
       throw new Error('Failed to insert user msg');
