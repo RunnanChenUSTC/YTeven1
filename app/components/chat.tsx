@@ -761,12 +761,17 @@ function _Chat() {
 const [questionContent, setQuestionContent] = useState('');
 const fetchQuestion = async (questionId: string) => {
   try {
+    const questionIdInt = parseInt(questionId, 10);  // 将字符串转换为整数
+    if (isNaN(questionIdInt)) {
+      console.error("Invalid QuestionID:", questionId);
+      return;
+    }
     const response = await fetch('/api/fetchQuestion', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ action: 'fetchQuestion', questionId })
+      body: JSON.stringify({ action: 'fetchQuestion', questionIdInt })
     });
 
     if (!response.ok) {
