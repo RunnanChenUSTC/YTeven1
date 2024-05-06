@@ -779,7 +779,7 @@ const fetchQuestion = async (questionId: string) => {
     }
 
     const data = await response.json();
-    if (data.success && data.Content) {
+    if (data.Content) {
       console.log("Fetched question content:", data.Content);
       setQuestionContent(data.Content);  // 更新状态
     } else {
