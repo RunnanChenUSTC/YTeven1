@@ -788,6 +788,9 @@ useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
   console.log("Received question from URL:", questionid);
+  if (questionid) {
+    fetchQuestion(questionid);
+  }
   if (questionContent && !autoSubmitted && extractedUsername) {
       doSubmit(decodeURIComponent(questionContent));
       setAutoSubmitted(true);
