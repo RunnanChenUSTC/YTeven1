@@ -815,7 +815,8 @@ useEffect(() => {
   if (questionid && !autoSubmitted && extractedUsername) {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
-        doSubmit(decodeURIComponent(Content));
+        const questionIdInt = parseInt(questionid, 10);
+        doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
       });
