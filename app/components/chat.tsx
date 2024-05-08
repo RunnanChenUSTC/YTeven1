@@ -829,7 +829,7 @@ useEffect(() => {
         console.log('Fetched Content:', Content);
       });
   }
-}, [autoSubmitted, extractedUsername,firstQuestionIDReceived])
+}, [autoSubmitted, extractedUsername,firstQuestionIDReceived,location.search])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
