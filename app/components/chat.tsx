@@ -771,6 +771,7 @@ function _Chat() {
 };
   // 自动处理URL中的question参数
 const [questionContent, setQuestionContent] = useState('');
+const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false);
 const fetchQuestion = async (questionId: string) => {
   try {
     const questionIdInt = parseInt(questionId, 10);  // 将字符串转换为整数
@@ -816,13 +817,17 @@ useEffect(() => {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
-        del: () => chatStore.deleteSession(chatStore.currentSessionIndex);
+        if (!firstQuestionIDReceived) {
+          setFirstQuestionIDReceived(true);
+        } else {
+          chatStore.deleteSession(chatStore.currentSessionIndex); 
+        }
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
       });
   }
-}, [autoSubmitted, extractedUsername])
+}, [autoSubmitted, extractedUsername,firstQuestionIDReceived])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
