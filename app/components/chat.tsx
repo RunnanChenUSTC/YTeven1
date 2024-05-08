@@ -820,6 +820,7 @@ useEffect(() => {
         console.log(firstQuestionIDReceived);
         if (!firstQuestionIDReceived) {
           setFirstQuestionIDReceived(true);
+          console.log("now is:",firstQuestionIDReceived);
         } else {
           chatStore.deleteSession(chatStore.currentSessionIndex); 
         }
