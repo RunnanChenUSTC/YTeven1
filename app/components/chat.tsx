@@ -817,19 +817,19 @@ useEffect(() => {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
-        console.log(firstQuestionIDReceived);
-        if (!firstQuestionIDReceived) {
-          setFirstQuestionIDReceived(true);
-          console.log("now is:",firstQuestionIDReceived);
-        } else {
-          chatStore.deleteSession(chatStore.currentSessionIndex); 
-        }
+        chatStore.newSession();
+        // if (!firstQuestionIDReceived) {
+        //   setFirstQuestionIDReceived(true);
+        //   console.log("now is:",firstQuestionIDReceived);
+        // } else {
+        //   chatStore.deleteSession(chatStore.currentSessionIndex); 
+        // }
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
       });
   }
-}, [autoSubmitted, extractedUsername,firstQuestionIDReceived,location.search])
+}, [autoSubmitted, extractedUsername])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
