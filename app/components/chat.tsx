@@ -817,7 +817,9 @@ useEffect(() => {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
-        chatStore.newSession();
+        // console.log(firstQuestionIDReceived);
+        chatStore.deleteSession(chatStore.currentSessionIndex)
+        // chatStore.newSession();
         // if (!firstQuestionIDReceived) {
         //   setFirstQuestionIDReceived(true);
         //   console.log("now is:",firstQuestionIDReceived);
