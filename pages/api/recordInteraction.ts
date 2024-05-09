@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (action === 'insertInteraction') {
       const { UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID} = data;
-      const query = 'INSERT INTO user_log_copy2 (UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID) VALUES (?, ?, ?, ?, ?, ?)';
+      const query = 'INSERT INTO user_log_UMN (UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID) VALUES (?, ?, ?, ?, ?, ?)';
       const params = [UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID || null];
       const [result] = await connection.execute<mysql2.ResultSetHeader>(
         query, params
@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     } else if (action === 'fetchUserID') {
       const { username } = data;
       const [rows] = await connection.execute<RowDataPacket[]>(
-        'SELECT UserID FROM user_copy1 WHERE UserName = ?', [username]
+        'SELECT UserID FROM user_UMN WHERE UserName = ?', [username]
       );
 
       if (rows.length > 0) {
