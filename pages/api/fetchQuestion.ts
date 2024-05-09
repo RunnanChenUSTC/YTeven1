@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // 处理基于questionId的查询
     if (action === 'fetchQuestion') {
       const [rows] = await connection.execute<RowDataPacket[]>(
-        'SELECT Content FROM Question WHERE QuestionID = ?',
+        'SELECT Content FROM Question_UMN WHERE QuestionID = ?',
         [questionId]
       );
 
