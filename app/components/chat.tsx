@@ -803,6 +803,7 @@ const fetchQuestion = async (questionId: string) => {
     console.error('Request failed:', error);
   }
 };
+const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false); 
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -818,11 +819,14 @@ useEffect(() => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
         // console.log(firstQuestionIDReceived);
+        if (!firstQuestionIDReceived) {
+        setFirstQuestionIDReceived(true); // 设置为true，表明已接收到首个QuestionID
+      } else{
         chatStore.updateCurrentSession(session => {
           // 设置messages为空数组，从而删除所有消息
           session.messages = [];
           console.log("All messages have been deleted.");
-        });
+        });}
         // chatStore.newSession();
         // if (!firstQuestionIDReceived) {
         //   setFirstQuestionIDReceived(true);
