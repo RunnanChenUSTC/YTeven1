@@ -851,6 +851,7 @@ useEffect(() => {
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
+        console.log('seenQuestionIDssize',seenQuestionIDs.size);
         if (seenQuestionIDs.size == 1) {
           chatStore.updateCurrentSession(session => {
             session.mask.context = [];
