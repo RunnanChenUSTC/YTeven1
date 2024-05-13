@@ -804,6 +804,7 @@ const fetchQuestion = async (questionId: string) => {
   }
 };
 const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false); 
+const firstQuestionIDReceivedRef = useRef(false);
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -819,7 +820,8 @@ useEffect(() => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
         // console.log(firstQuestionIDReceived);
-        if (!firstQuestionIDReceived) {
+        if (!firstQuestionIDReceivedRef.current) {
+        firstQuestionIDReceivedRef.current = true; // 更新 ref
         setFirstQuestionIDReceived(true); // 设置为true，表明已接收到首个QuestionID
       } else{
         chatStore.updateCurrentSession(session => {
@@ -839,7 +841,7 @@ useEffect(() => {
         console.log('Fetched Content:', Content);
       });
   }
-}, [autoSubmitted, extractedUsername,firstQuestionIDReceived])
+}, [autoSubmitted, extractedUsername])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
