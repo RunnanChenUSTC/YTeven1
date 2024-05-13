@@ -823,8 +823,10 @@ useEffect(() => {
       const isNewQuestionID = !seenQuestionIDs.has(questionid);
       
       // Update the set of seen QuestionIDs if it's a new one
+      let updatedSeenQuestionIDs = new Set(seenQuestionIDs);
       if (isNewQuestionID) {
-        setSeenQuestionIDs(prevIDs => new Set(prevIDs).add(questionid));
+        updatedSeenQuestionIDs.add(questionid);
+        setSeenQuestionIDs(updatedSeenQuestionIDs);
       }
       if (isNewQuestionID) {
       fetchQuestion(questionid).then(Content => {
@@ -851,8 +853,8 @@ useEffect(() => {
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
-        console.log('seenQuestionIDssize',seenQuestionIDs.size);
-        if (seenQuestionIDs.size == 1) {
+        console.log('QuestionIDssize',updatedSeenQuestionIDs.size);
+        if (updatedSeenQuestionIDs.size > 1) {
           chatStore.updateCurrentSession(session => {
             session.mask.context = [];
             session.messages = []; // Clear all messages
@@ -861,7 +863,7 @@ useEffect(() => {
         }
       });}
   }}
-}, [ extractedUsername,seenQuestionIDs])
+}, [autoSubmitted, extractedUsername,seenQuestionIDs])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
