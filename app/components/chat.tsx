@@ -829,9 +829,11 @@ useEffect(() => {
       if (seenQuestionIDs.size >= 1) {
         // Clear messages if more than one unique QuestionID has been received
         chatStore.updateCurrentSession(session => {
-          session.messages = []; // Clear all messages
-          console.log("All messages have been cleared due to new QuestionID.");
-        });
+          // Clear the context and possibly other session-specific data
+          session.context = [];
+          session.messages = [];
+          console.log("Session context has been cleared.");
+      });
       }}
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
