@@ -807,6 +807,7 @@ const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false);
 const firstQuestionIDReceivedRef = useRef(false);
 const [questionIDs, setQuestionIDs] = useState(new Set());
 const [firstQuestionID, setFirstQuestionID] = useState(null); // Store the very first QuestionID
+const [seenQuestionIDs, setSeenQuestionIDs] = useState(new Set()); // Set to track seen QuestionIDs
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -818,23 +819,20 @@ useEffect(() => {
   //   });
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
-      if (questionid) {
-        if (firstQuestionID === null) {
-          // If no first QuestionID is set, set it and add to the set
-          setFirstQuestionID(questionid);
-          setQuestionIDs(new Set(questionIDs.add(questionid)));
-        }else {
-          // Check if the new QuestionID is different from the first and if it's new
-          if (!questionIDs.has(questionid)) {
-            // If it's a new QuestionID, clear messages
-            chatStore.updateCurrentSession(session => {
-              session.messages = []; // Clear all messages
-              console.log("All messages have been cleared.");
-            });
-            // Add new QuestionID to the set
-            setQuestionIDs(new Set(questionIDs.add(questionid)));
-          }
-        }}
+    if (questionid) {
+      const isNewQuestionID = !seenQuestionIDs.has(questionid);
+      if (isNewQuestionID) {
+        // Add new QuestionID to the set
+        setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
+      }
+      
+      if (seenQuestionIDs.size > 1) {
+        // Clear messages if more than one unique QuestionID has been received
+        chatStore.updateCurrentSession(session => {
+          session.messages = []; // Clear all messages
+          console.log("All messages have been cleared due to new QuestionID.");
+        });
+      }}
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
@@ -861,7 +859,7 @@ useEffect(() => {
         console.log('Fetched Content:', Content);
       });
   }
-}, [autoSubmitted, extractedUsername,questionIDs, firstQuestionID])
+}, [autoSubmitted, extractedUsername,seenQuestionIDs])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
