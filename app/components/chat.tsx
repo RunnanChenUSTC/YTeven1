@@ -823,6 +823,7 @@ useEffect(() => {
         if (!firstQuestionIDReceivedRef.current) {
         firstQuestionIDReceivedRef.current = true; // 更新 ref
         setFirstQuestionIDReceived(true); // 设置为true，表明已接收到首个QuestionID
+        console.log("First time QuestionID received.");
       } else{
         chatStore.updateCurrentSession(session => {
           // 设置messages为空数组，从而删除所有消息
