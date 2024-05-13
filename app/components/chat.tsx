@@ -808,6 +808,7 @@ const firstQuestionIDReceivedRef = useRef(false);
 const [questionIDs, setQuestionIDs] = useState(new Set());
 const [firstQuestionID, setFirstQuestionID] = useState(null); // Store the very first QuestionID
 const [seenQuestionIDs, setSeenQuestionIDs] = useState(new Set()); // Set to track seen QuestionIDs
+let updatedSeenQuestionIDs = new Set();
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -820,13 +821,11 @@ useEffect(() => {
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
     if (questionid) {
-      const isNewQuestionID = !seenQuestionIDs.has(questionid);
+      const isNewQuestionID = !updatedSeenQuestionIDs.has(questionid);
       
       // Update the set of seen QuestionIDs if it's a new one
-      let updatedSeenQuestionIDs = new Set(seenQuestionIDs);
       if (isNewQuestionID) {
         updatedSeenQuestionIDs.add(questionid);
-        setSeenQuestionIDs(updatedSeenQuestionIDs);
       }
       if (isNewQuestionID) {
       fetchQuestion(questionid).then(Content => {
@@ -863,7 +862,7 @@ useEffect(() => {
         }
       });}
   }}
-}, [autoSubmitted, extractedUsername,seenQuestionIDs])
+}, [autoSubmitted, extractedUsername, updatedSeenQuestionIDs])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
