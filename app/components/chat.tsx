@@ -829,6 +829,7 @@ useEffect(() => {
         });}
       
         setSeenQuestionIDs(prevIDs => {
+          console.log("prevID size":prevIDs.size);
           if (prevIDs.size > 1) {
             chatStore.updateCurrentSession(session => {
               session.mask.context = [];
