@@ -851,7 +851,7 @@ useEffect(() => {
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
-        if (seenQuestionIDs.size > 0) {
+        if (seenQuestionIDs.size > 1) {
           chatStore.updateCurrentSession(session => {
             session.mask.context = [];
             session.messages = []; // Clear all messages
@@ -860,7 +860,7 @@ useEffect(() => {
         }
       });}
   }}
-}, [autoSubmitted, extractedUsername,seenQuestionIDs])
+}, [ extractedUsername,seenQuestionIDs])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
