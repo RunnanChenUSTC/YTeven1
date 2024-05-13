@@ -851,7 +851,7 @@ useEffect(() => {
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
-        if (seenQuestionIDs.size > 1) {
+        if (seenQuestionIDs.size == 1) {
           chatStore.updateCurrentSession(session => {
             session.mask.context = [];
             session.messages = []; // Clear all messages
