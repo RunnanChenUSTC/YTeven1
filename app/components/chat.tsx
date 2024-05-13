@@ -771,7 +771,7 @@ function _Chat() {
 };
   // 自动处理URL中的question参数
 const [questionContent, setQuestionContent] = useState('');
-const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false);
+// const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false);
 const fetchQuestion = async (questionId: string) => {
   try {
     const questionIdInt = parseInt(questionId, 10);  // 将字符串转换为整数
