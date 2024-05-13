@@ -820,21 +820,25 @@ useEffect(() => {
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
     if (questionid) {
-      const isNewQuestionID = !seenQuestionIDs.has(questionid);
-      if (isNewQuestionID) {
-        // Add new QuestionID to the set
-        setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
-      }
+      if (!seenQuestionIDs.has(questionid)) {
+        // Use a functional update to ensure we're working with the most current state
+        setSeenQuestionIDs(prevIDs => {
+          const newIDs = new Set(prevIDs);
+          newIDs.add(questionid);
+          return newIDs;
+        });}
       
-      if (seenQuestionIDs.size >= 1) {
-        // Clear messages if more than one unique QuestionID has been received
-        chatStore.updateCurrentSession(session => {
-          // Clear the context and possibly other session-specific data
-          session.mask.context = [];
-          session.messages = [];
-          console.log("Session context has been cleared.");
-      });
-      }}
+        setSeenQuestionIDs(prevIDs => {
+          if (prevIDs.size > 1) {
+            chatStore.updateCurrentSession(session => {
+              session.mask.context = [];
+              session.messages = [];
+              console.log("Session context and messages have been cleared.");
+            });
+            git
+          }
+          return prevIDs;
+        });
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
@@ -860,7 +864,7 @@ useEffect(() => {
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
       });
-  }
+  }}
 }, [autoSubmitted, extractedUsername])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
