@@ -820,26 +820,13 @@ useEffect(() => {
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
     if (questionid) {
-      if (!seenQuestionIDs.has(questionid)) {
-        // Use a functional update to ensure we're working with the most current state
-        setSeenQuestionIDs(prevIDs => {
-          const newIDs = new Set(prevIDs);
-          newIDs.add(questionid);
-          return newIDs;
-        });}
+      const isNewQuestionID = !seenQuestionIDs.has(questionid);
       
-        setSeenQuestionIDs(prevIDs => {
-          console.log("prevID size":prevIDs.size);
-          if (prevIDs.size > 1) {
-            chatStore.updateCurrentSession(session => {
-              session.mask.context = [];
-              session.messages = [];
-              console.log("Session context and messages have been cleared.");
-            });
-          }
-          
-          return prevIDs;
-        });
+      // Update the set of seen QuestionIDs if it's a new one
+      if (isNewQuestionID) {
+        setSeenQuestionIDs(prevIDs => new Set(prevIDs).add(questionid));
+      }
+      if (isNewQuestionID) {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
@@ -864,7 +851,13 @@ useEffect(() => {
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
-      });
+        if (seenQuestionIDs.size > 0) {
+          chatStore.updateCurrentSession(session => {
+            session.messages = []; // Clear all messages
+            console.log("All messages have been cleared due to new QuestionID.");
+          });
+        }
+      });}
   }}
 }, [autoSubmitted, extractedUsername])
 // useEffect(() => {
