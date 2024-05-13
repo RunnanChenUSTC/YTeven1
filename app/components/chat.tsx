@@ -826,7 +826,7 @@ useEffect(() => {
         setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
       }
       
-      if (seenQuestionIDs.size > 1) {
+      if (seenQuestionIDs.size >= 1) {
         // Clear messages if more than one unique QuestionID has been received
         chatStore.updateCurrentSession(session => {
           // Clear the context and possibly other session-specific data
