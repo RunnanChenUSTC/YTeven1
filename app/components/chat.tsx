@@ -830,7 +830,7 @@ useEffect(() => {
         // Clear messages if more than one unique QuestionID has been received
         chatStore.updateCurrentSession(session => {
           // Clear the context and possibly other session-specific data
-          session.context = [];
+          session.mask.context = [];
           session.messages = [];
           console.log("Session context has been cleared.");
       });
