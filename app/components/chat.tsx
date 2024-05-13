@@ -853,6 +853,7 @@ useEffect(() => {
         console.log('Fetched Content:', Content);
         if (seenQuestionIDs.size > 0) {
           chatStore.updateCurrentSession(session => {
+            session.mask.context = [];
             session.messages = []; // Clear all messages
             console.log("All messages have been cleared due to new QuestionID.");
           });
