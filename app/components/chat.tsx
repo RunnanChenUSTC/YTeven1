@@ -835,8 +835,8 @@ useEffect(() => {
               session.messages = [];
               console.log("Session context and messages have been cleared.");
             });
-            git
           }
+          
           return prevIDs;
         });
       fetchQuestion(questionid).then(Content => {
