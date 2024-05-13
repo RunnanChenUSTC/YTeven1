@@ -805,6 +805,8 @@ const fetchQuestion = async (questionId: string) => {
 };
 const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false); 
 const firstQuestionIDReceivedRef = useRef(false);
+const [questionIDs, setQuestionIDs] = useState(new Set());
+const [firstQuestionID, setFirstQuestionID] = useState(null); // Store the very first QuestionID
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -815,21 +817,38 @@ useEffect(() => {
   //     console.log('Fetched Content:', content);
   //   });
   // }
-  if (questionid && !autoSubmitted && extractedUsername) {
+  if (questionid && !autoSubmitted && extractedUsername) { 
+      if (questionid) {
+        if (firstQuestionID === null) {
+          // If no first QuestionID is set, set it and add to the set
+          setFirstQuestionID(questionid);
+          setQuestionIDs(new Set(questionIDs.add(questionid)));
+        }else {
+          // Check if the new QuestionID is different from the first and if it's new
+          if (!questionIDs.has(questionid)) {
+            // If it's a new QuestionID, clear messages
+            chatStore.updateCurrentSession(session => {
+              session.messages = []; // Clear all messages
+              console.log("All messages have been cleared.");
+            });
+            // Add new QuestionID to the set
+            setQuestionIDs(new Set(questionIDs.add(questionid)));
+          }
+        }}
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
         // console.log(firstQuestionIDReceived);
-        if (!firstQuestionIDReceivedRef.current) {
-        firstQuestionIDReceivedRef.current = true; // 更新 ref
-        setFirstQuestionIDReceived(true); // 设置为true，表明已接收到首个QuestionID
-        console.log("First time QuestionID received.");
-      } else{
-        chatStore.updateCurrentSession(session => {
-          // 设置messages为空数组，从而删除所有消息
-          session.messages = [];
-          console.log("All messages have been deleted.");
-        });}
+      //   if (!firstQuestionIDReceivedRef.current) {
+      //   // firstQuestionIDReceivedRef.current = true; // 更新 ref
+      //   // setFirstQuestionIDReceived(true); // 设置为true，表明已接收到首个QuestionID
+      //   console.log("First time QuestionID received.");
+      // } else{
+      //   chatStore.updateCurrentSession(session => {
+      //     // 设置messages为空数组，从而删除所有消息
+      //     session.messages = [];
+      //     console.log("All messages have been deleted.");
+      //   });}
         // chatStore.newSession();
         // if (!firstQuestionIDReceived) {
         //   setFirstQuestionIDReceived(true);
@@ -842,7 +861,7 @@ useEffect(() => {
         console.log('Fetched Content:', Content);
       });
   }
-}, [autoSubmitted, extractedUsername])
+}, [autoSubmitted, extractedUsername,questionIDs, firstQuestionID])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
