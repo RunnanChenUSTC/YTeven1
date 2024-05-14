@@ -808,7 +808,6 @@ const firstQuestionIDReceivedRef = useRef(false);
 const [questionIDs, setQuestionIDs] = useState(new Set());
 const [firstQuestionID, setFirstQuestionID] = useState(null); // Store the very first QuestionID
 const [seenQuestionIDs, setSeenQuestionIDs] = useState(new Set()); // Set to track seen QuestionIDs
-const updatedSeenQuestionIDs = new Set();
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -821,13 +820,21 @@ useEffect(() => {
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
     if (questionid) {
-      const isNewQuestionID = !updatedSeenQuestionIDs.has(questionid);
-      
-      // Update the set of seen QuestionIDs if it's a new one
+      const isNewQuestionID = !seenQuestionIDs.has(questionid);
       if (isNewQuestionID) {
-        updatedSeenQuestionIDs.add(questionid);
+        // Add new QuestionID to the set
+        setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
       }
-      if (isNewQuestionID) {
+      
+      if (seenQuestionIDs.size >= 1) {
+        // Clear messages if more than one unique QuestionID has been received
+        chatStore.updateCurrentSession(session => {
+          // Clear the context and possibly other session-specific data
+          session.mask.context = [];
+          session.messages = [];
+          console.log("Session context has been cleared.");
+      });
+      }}
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
@@ -852,16 +859,8 @@ useEffect(() => {
         doSubmit(decodeURIComponent(Content),questionIdInt);
         setAutoSubmitted(true);
         console.log('Fetched Content:', Content);
-        console.log('QuestionIDssize',updatedSeenQuestionIDs.size);
-        if (updatedSeenQuestionIDs.size > 1) {
-          chatStore.updateCurrentSession(session => {
-            session.mask.context = [];
-            session.messages = []; // Clear all messages
-            console.log("All messages have been cleared due to new QuestionID.");
-          });
-        }
-      });}
-  }}
+      });
+  }
 }, [autoSubmitted, extractedUsername])
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
