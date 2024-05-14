@@ -639,7 +639,7 @@ function _Chat() {
       console.error('Error:', error);
     });
   }
-}, [extractedUsername, hasSentEvent]);
+}, [session.messages,extractedUsername, hasSentEvent]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
