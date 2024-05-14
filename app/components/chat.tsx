@@ -830,7 +830,7 @@ useEffect(() => {
   //   });
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
-    const addQuestionID = (id) => {
+    const addQuestionID = (id:number) => {
       if (id !== null && !questionIDs.has(id)) {
         const newQuestionIDs = new Set(questionIDs.add(id));
         setQuestionIDs(newQuestionIDs);
