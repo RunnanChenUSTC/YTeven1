@@ -499,7 +499,7 @@ function _Chat() {
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollDomToBottom } = useScrollToBottom();
   const [hitBottom, setHitBottom] = useState(true);
-  const { addQuestionID, hasQuestionID, questionIDs } = useQuestionIDStore();
+  // const { addQuestionID, hasQuestionID, questionIDs } = useQuestionIDStore();
   const isMobileScreen = useMobileScreen();
   const navigate = useNavigate();
   // prompt hints
@@ -519,6 +519,15 @@ function _Chat() {
   );
   // auto grow input
   const [inputRows, setInputRows] = useState(2);
+  const [questionIDs, setQuestionIDs] = useState(new Set());
+
+  // 在组件加载时从localStorage中读取QuestionIDs
+  useEffect(() => {
+    const storedIDs = localStorage.getItem('questionIDs');
+    if (storedIDs) {
+      setQuestionIDs(new Set(JSON.parse(storedIDs)));
+    }
+  }, []);
   const measure = useDebouncedCallback(
     () => {
       const rows = inputRef.current ? autoGrowTextArea(inputRef.current) : 1;
@@ -821,13 +830,14 @@ useEffect(() => {
   //   });
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
-    if (questionid&& questionid !== 'null') {
-      // const isNewQuestionID = !seenQuestionIDs.has(questionid);
-      if (!hasQuestionID(questionid)) {
-        // Add new QuestionID to the set
-        addQuestionID(questionid);
-        // setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
-        if (questionIDs.size > 1) {
+    const addQuestionID = (id) => {
+      if (id !== null && !questionIDs.has(id)) {
+        const newQuestionIDs = new Set(questionIDs.add(id));
+        setQuestionIDs(newQuestionIDs);
+        localStorage.setItem('questionIDs', JSON.stringify(Array.from(newQuestionIDs)));
+  
+        // Check if this is the second non-null questionID
+        if (newQuestionIDs.size >= 2) {
           chatStore.updateCurrentSession(session => {
             session.mask.context = [];
             session.messages = [];
@@ -835,7 +845,22 @@ useEffect(() => {
           });
         }
       }
-    }
+    };
+    // if (questionid&& questionid !== 'null') {
+    //   // const isNewQuestionID = !seenQuestionIDs.has(questionid);
+    //   if (!hasQuestionID(questionid)) {
+    //     // Add new QuestionID to the set
+    //     addQuestionID(questionid);
+    //     // setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
+    //     if (questionIDs.size > 1) {
+    //       chatStore.updateCurrentSession(session => {
+    //         session.mask.context = [];
+    //         session.messages = [];
+    //         console.log("All messages have been cleared due to new QuestionID.");
+    //       });
+    //     }
+    //   }
+    // }
       // if (seenQuestionIDs.size >= 1) {
       //   // Clear messages if more than one unique QuestionID has been received
       //   chatStore.updateCurrentSession(session => {
@@ -848,6 +873,7 @@ useEffect(() => {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
+        addQuestionID(questionIdInt);
         // console.log(firstQuestionIDReceived);
       //   if (!firstQuestionIDReceivedRef.current) {
       //   // firstQuestionIDReceivedRef.current = true; // 更新 ref

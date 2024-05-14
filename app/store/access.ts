@@ -74,6 +74,31 @@ const useQuestionIDStore = createPersistStore(
 );
 
 export default useQuestionIDStore;
+// const usePersistedQuestionIDs = () => {
+//   const [questionIDs, setQuestionIDs] = useState(new Set());
+
+//   useEffect(() => {
+//     // Load question IDs from local storage when the component mounts
+//     const storedIDs = localStorage.getItem('questionIDs');
+//     if (storedIDs) {
+//       setQuestionIDs(new Set(JSON.parse(storedIDs)));
+//     }
+//   }, []);
+
+//   const addQuestionID = (id) => {
+//     if (id !== null && !questionIDs.has(id)) {
+//       const newQuestionIDs = new Set(questionIDs);
+//       newQuestionIDs.add(id);
+//       setQuestionIDs(newQuestionIDs);
+//       localStorage.setItem('questionIDs', JSON.stringify(Array.from(newQuestionIDs)));
+//     }
+//   };
+
+//   return [questionIDs, addQuestionID];
+// };
+
+// export default usePersistedQuestionIDs;
+
 export const useAccessStore = createPersistStore(
   { ...DEFAULT_ACCESS_STATE },
 
