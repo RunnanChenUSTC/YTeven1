@@ -91,6 +91,7 @@ import { prettyObject } from "../utils/format";
 import { ExportMessageModal } from "./exporter";
 import { getClientConfig } from "../config/client";
 import { useAllModels } from "../utils/hooks";
+import useQuestionIDStore from "../store/access";
 const Markdown = dynamic(async () => (await import("./markdown")).Markdown, {
   loading: () => <LoadingIcon />,
 });
@@ -498,6 +499,7 @@ function _Chat() {
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollDomToBottom } = useScrollToBottom();
   const [hitBottom, setHitBottom] = useState(true);
+  const { addQuestionID, hasQuestionID, questionIDs } = useQuestionIDStore();
   const isMobileScreen = useMobileScreen();
   const navigate = useNavigate();
   // prompt hints
@@ -805,7 +807,7 @@ const fetchQuestion = async (questionId: string) => {
 };
 const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false); 
 const firstQuestionIDReceivedRef = useRef(false);
-const [questionIDs, setQuestionIDs] = useState(new Set());
+// const [questionIDs, setQuestionIDs] = useState(new Set());
 const [firstQuestionID, setFirstQuestionID] = useState(null); // Store the very first QuestionID
 const [seenQuestionIDs, setSeenQuestionIDs] = useState(new Set()); // Set to track seen QuestionIDs
 useEffect(() => {
@@ -819,22 +821,30 @@ useEffect(() => {
   //   });
   // }
   if (questionid && !autoSubmitted && extractedUsername) { 
-    if (questionid) {
-      const isNewQuestionID = !seenQuestionIDs.has(questionid);
-      if (isNewQuestionID) {
+    if (questionid&& questionid !== 'null') {
+      // const isNewQuestionID = !seenQuestionIDs.has(questionid);
+      if (!hasQuestionID(questionid)) {
         // Add new QuestionID to the set
-        setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
+        addQuestionID(questionid);
+        // setSeenQuestionIDs(new Set(seenQuestionIDs.add(questionid)));
+        if (questionIDs.size > 1) {
+          chatStore.updateCurrentSession(session => {
+            session.mask.context = [];
+            session.messages = [];
+            console.log("All messages have been cleared due to new QuestionID.");
+          });
+        }
       }
-      
-      if (seenQuestionIDs.size >= 1) {
-        // Clear messages if more than one unique QuestionID has been received
-        chatStore.updateCurrentSession(session => {
-          // Clear the context and possibly other session-specific data
-          session.mask.context = [];
-          session.messages = [];
-          console.log("Session context has been cleared.");
-      });
-      }}
+    }
+      // if (seenQuestionIDs.size >= 1) {
+      //   // Clear messages if more than one unique QuestionID has been received
+      //   chatStore.updateCurrentSession(session => {
+      //     // Clear the context and possibly other session-specific data
+      //     session.mask.context = [];
+      //     session.messages = [];
+      //     console.log("Session context has been cleared.");
+      // });
+      // }}
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
