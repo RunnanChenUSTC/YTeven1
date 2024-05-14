@@ -43,37 +43,37 @@ const DEFAULT_ACCESS_STATE = {
   customModels: "",
 };
 
-// Define the initial state with a set for question IDs
-const initialState = {
-  questionIDs: new Set(),
-};
+// // Define the initial state with a set for question IDs
+// const initialState = {
+//   questionIDs: new Set(),
+// };
 
-// Define methods to manipulate the question IDs
-const storeMethods = (set, get) => ({
-  addQuestionID: (id) => {
-    const newSet = new Set(get().questionIDs);
-    newSet.add(id);
-    set({ questionIDs: newSet });
-  },
-  hasQuestionID: (id) => {
-    return get().questionIDs.has(id);
-  },
-  clearQuestionIDs: () => {
-    set({ questionIDs: new Set() });
-  }
-});
+// // Define methods to manipulate the question IDs
+// const storeMethods = (set, get) => ({
+//   addQuestionID: (id) => {
+//     const newSet = new Set(get().questionIDs);
+//     newSet.add(id);
+//     set({ questionIDs: newSet });
+//   },
+//   hasQuestionID: (id) => {
+//     return get().questionIDs.has(id);
+//   },
+//   clearQuestionIDs: () => {
+//     set({ questionIDs: new Set() });
+//   }
+// });
 
-// Create the store with persistence options
-const useQuestionIDStore = createPersistStore(
-  initialState,
-  storeMethods,
-  {
-    name: "question-id-storage", // Name of your storage item
-    getStorage: () => localStorage, // Define where to persist (e.g., localStorage)
-  }
-);
+// // Create the store with persistence options
+// const useQuestionIDStore = createPersistStore(
+//   initialState,
+//   storeMethods,
+//   {
+//     name: "question-id-storage", // Name of your storage item
+//     getStorage: () => localStorage, // Define where to persist (e.g., localStorage)
+//   }
+// );
 
-export default useQuestionIDStore;
+// export default useQuestionIDStore;
 // const usePersistedQuestionIDs = () => {
 //   const [questionIDs, setQuestionIDs] = useState(new Set());
 
