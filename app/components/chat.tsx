@@ -829,7 +829,7 @@ useEffect(() => {
   //     console.log('Fetched Content:', content);
   //   });
   // }
-  if (questionid && !autoSubmitted && extractedUsername) { 
+  if (questionid &&!questionIDs.has(questionid) && !autoSubmitted && extractedUsername) { 
     const addQuestionID = (id:number) => {
       if (id !== null && !questionIDs.has(id)) {
         const newQuestionIDs = new Set(questionIDs.add(id));
