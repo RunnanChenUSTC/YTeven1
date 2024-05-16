@@ -892,9 +892,11 @@ useEffect(() => {
         // } else {
         //   chatStore.deleteSession(chatStore.currentSessionIndex); 
         // }
-        doSubmit(decodeURIComponent(Content),questionIdInt);
-        setAutoSubmitted(true);
-        console.log('Fetched Content:', Content);
+        if(!questionIDs.has(questionIdInt)){
+          doSubmit(decodeURIComponent(Content),questionIdInt);
+          setAutoSubmitted(true);
+          console.log('Fetched Content:', Content);
+        }
       });
   }
 }, [autoSubmitted, extractedUsername])
