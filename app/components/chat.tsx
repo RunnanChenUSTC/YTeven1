@@ -579,7 +579,7 @@ function _Chat() {
   useEffect(() => {
   const lastMessage = session.messages[session.messages.length - 1];
 
-  if (lastMessage && lastMessage.role === 'assistant' && extractedUsername && !lastMessage.streaming && !hasSentEventRef.current && lastMessage.content.trim() !== '') {
+  if (lastMessage && lastMessage.role === 'assistant' && extractedUsername && !lastMessage.streaming && lastMessage.content.trim() !== '') {
     // 获取用户的最后一个问题
     hasSentEventRef.current = true;
     const userMessages = session.messages.filter(message => message.role === 'user');
@@ -637,7 +637,7 @@ function _Chat() {
           } else {
             throw new Error('Failed to record interaction');
           }
-          hasSentEventRef.current = false;
+          // hasSentEventRef.current = false;
         })
         .catch(error => console.error('Error:', error));
       } else {
