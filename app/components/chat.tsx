@@ -574,12 +574,14 @@ function _Chat() {
   // chat commands shortcuts
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
-  const [hasSentEvent, setHasSentEvent] = useState(false);
+  // const [hasSentEvent, setHasSentEvent] = useState(false);
+  const hasSentEventRef = useRef(false);
   useEffect(() => {
   const lastMessage = session.messages[session.messages.length - 1];
 
-  if (lastMessage && lastMessage.role === 'assistant' && extractedUsername && !lastMessage.streaming && !hasSentEvent && lastMessage.content.trim() !== '') {
+  if (lastMessage && lastMessage.role === 'assistant' && extractedUsername && !lastMessage.streaming && !hasSentEventRef.current && lastMessage.content.trim() !== '') {
     // 获取用户的最后一个问题
+    hasSentEventRef.current = true;
     const userMessages = session.messages.filter(message => message.role === 'user');
     const lastUserMessage = userMessages[userMessages.length - 1];
     const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
@@ -616,7 +618,6 @@ function _Chat() {
         GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
       };
-
       return fetch('/api/recordInteraction', {
         method: 'POST',
         headers: {
@@ -633,13 +634,15 @@ function _Chat() {
     })
     .then(data => {
       console.log('Interaction recorded:', data);
-      setHasSentEvent(true);
+      // setHasSentEvent(true);
+      hasSentEventRef.current = false;
     })
     .catch(error => {
       console.error('Error:', error);
+      hasSentEventRef.current = false;
     });
   }
-}, [session.messages,extractedUsername, hasSentEvent]);
+}, [session.messages,extractedUsername]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
@@ -892,11 +895,9 @@ useEffect(() => {
         // } else {
         //   chatStore.deleteSession(chatStore.currentSessionIndex); 
         // }
-        if(!questionIDs.has(questionIdInt)){
-          doSubmit(decodeURIComponent(Content),questionIdInt);
-          setAutoSubmitted(true);
-          console.log('Fetched Content:', Content);
-        }
+        doSubmit(decodeURIComponent(Content),questionIdInt);
+        setAutoSubmitted(true);
+        console.log('Fetched Content:', Content);
       });
   }
 }, [autoSubmitted, extractedUsername])
