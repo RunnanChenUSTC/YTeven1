@@ -618,30 +618,32 @@ function _Chat() {
         GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
       };
-      return fetch('/api/recordInteraction', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dataToSend),
-      });
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to record interaction');
+      const interactionKey = `${dataToSend.UserID}-${dataToSend.GPTMessages}`;
+      const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
+      if (!recordedInteractions.includes(interactionKey)) {
+        fetch('/api/recordInteraction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        })
+        .then(response => {
+          if (response.ok) {
+            // Add to local storage to avoid future duplicates
+            recordedInteractions.push(interactionKey);
+            localStorage.setItem('recordedInteractions', JSON.stringify(recordedInteractions));
+            console.log('Interaction recorded:', dataToSend);
+          } else {
+            throw new Error('Failed to record interaction');
+          }
+          hasSentEventRef.current = false;
+        })
+        .catch(error => console.error('Error:', error));
+      } else {
+        console.log('Duplicate interaction, not recording again');
       }
-      return response.json();
-    })
-    .then(data => {
-      console.log('Interaction recorded:', data);
-      // setHasSentEvent(true);
-      hasSentEventRef.current = false;
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      hasSentEventRef.current = false;
-    });
-  }
+    });}
 }, [session.messages,extractedUsername]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
