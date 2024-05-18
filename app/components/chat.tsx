@@ -893,7 +893,7 @@ useEffect(() => {
       fetchQuestion(questionid).then(Content => {
         // 可以在这里使用获取到的问题内容
         const questionIdInt = parseInt(questionid, 10);
-        addQuestionID(questionIdInt);
+        // addQuestionID(questionIdInt);
         // console.log(firstQuestionIDReceived);
       //   if (!firstQuestionIDReceivedRef.current) {
       //   // firstQuestionIDReceivedRef.current = true; // 更新 ref
