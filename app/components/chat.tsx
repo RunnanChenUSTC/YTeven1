@@ -696,6 +696,8 @@ function _Chat() {
       throw new Error('Failed to fetch user ID');
     }
     const { UserID } = await userResponse.json();
+    const params1 = new URLSearchParams(window.location.search);
+    const questionid1 = params1.get("QuestionID");
     const interactionData: {
       action: string;
       UserID: any; // 考虑使用具体的类型而不是 any
@@ -712,8 +714,8 @@ function _Chat() {
       GPTMessages: userInput,
       Note: `user sent a message at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
     }
-    if (questionId) {
-      interactionData['QuestionID'] = questionId;
+    if (questionid1) {
+      interactionData['QuestionID'] = parseInt(questionid1,10);
     }
     const response = await fetch('/api/recordInteraction', {
       method: 'POST',
