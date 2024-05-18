@@ -610,7 +610,17 @@ function _Chat() {
     // 第二步：使用获取到的UserID发送交互数据
     fetchUserID().then(data => {
       const { UserID } = data;
-      const dataToSend = {
+      const params2 = new URLSearchParams(window.location.search);
+      const questionid2 = params2.get("QuestionID");
+      const dataToSend: {
+        action: string;
+        UserID: any; // 考虑使用具体的类型而不是 any
+        ButtonName: string;
+        UserLogTime: string;
+        GPTMessages: string;
+        Note: string;
+        QuestionID?: number; // 可选的 QuestionID
+    } ={
         action: 'insertInteraction',
         UserID: UserID,
         ButtonName: "Bot Response",
@@ -618,6 +628,9 @@ function _Chat() {
         GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
       };
+      if (questionid2) {
+        dataToSend['QuestionID'] = parseInt(questionid2,10);
+      }
       const interactionKey = `${dataToSend.UserID}-${dataToSend.GPTMessages}`;
       const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
       if (!recordedInteractions.includes(interactionKey)) {
