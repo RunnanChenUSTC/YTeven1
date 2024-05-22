@@ -1083,10 +1083,10 @@ useEffect(() => {
 
     if (token) {
       const decodedToken1 = jwtDecode<MyTokenPayload>(token);
-      if (decodedToken1.password) {
+      if (decodedToken1.gptAuth) {
         accessStore.update((access) => {
           access.openaiApiKey = access.openaiApiKey;
-          access.accessCode = decodedToken1.password;
+          access.accessCode = decodedToken1.gptAuth;
         });
       }
      }
