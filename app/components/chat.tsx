@@ -556,7 +556,7 @@ function _Chat() {
     
     if (token) {
       const decodedToken = jwtDecode<MyTokenPayload>(token);
-      if (decodedToken.password) {
+      if (decodedToken.gptAuth) {
         updateAccessStore((state) => {
           return { ...state, accessCode: decodedToken.gptAuth };
         });    
