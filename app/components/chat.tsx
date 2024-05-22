@@ -7,6 +7,7 @@ interface MyTokenPayload extends JwtPayload {
   username?: string;
   experimentGroup?: string;
   password: string;
+  gptAuth: string;
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
@@ -557,7 +558,7 @@ function _Chat() {
       const decodedToken = jwtDecode<MyTokenPayload>(token);
       if (decodedToken.password) {
         updateAccessStore((state) => {
-          return { ...state, accessCode: decodedToken.password };
+          return { ...state, accessCode: decodedToken.gptAuth };
         });    
       if (decodedToken.username) {
             setExtractedUsername(decodedToken.username);
