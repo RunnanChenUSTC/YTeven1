@@ -635,6 +635,7 @@ function _Chat() {
       const interactionKey = `${dataToSend.UserID}-${dataToSend.GPTMessages}`;
       const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
       console.log('BotMsg date and Id print:',lastMessage.date, lastMessage.id);
+      console.log('now the messageIndex BOT:', session.messages.length)
       if (!recordedInteractions.includes(interactionKey)) {
         fetch('/api/recordInteraction', {
           method: 'POST',
@@ -758,7 +759,9 @@ function _Chat() {
   
       // 获取会话中的最后一条消息，假设它是机器人的回答
       const lastMessage = session.messages[session.messages.length - 1];
-      console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id, lastMessage.content);
+      console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id);
+      console.log('UsrMsg content',lastMessage.content);
+      console.log('now the messageIndex USR:', session.messages.length)
       if (lastMessage) {
         const robotResponse = lastMessage; // 提取机器人的回答
   
