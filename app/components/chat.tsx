@@ -743,7 +743,7 @@ function _Chat() {
     }
   });
   }
-}, [session.messages,extractedUsername]);
+}, [session.messages,extractedUsername,session.messages.length]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
