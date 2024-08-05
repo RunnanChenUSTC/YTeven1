@@ -634,8 +634,8 @@ function _Chat() {
       }
       const interactionKey = `${dataToSend.UserID}-${dataToSend.GPTMessages}`;
       const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
-      console.log('BotMsg date and Id print:',lastMessage.date, lastMessage.id);
-      console.log('now the messageIndex BOT:', session.messages.length)
+      // console.log('BotMsg date and Id print:',lastMessage.date, lastMessage.id);
+      // console.log('now the messageIndex BOT:', session.messages.length)
       if (!recordedInteractions.includes(interactionKey)) {
         fetch('/api/recordInteraction', {
           method: 'POST',
@@ -660,6 +660,87 @@ function _Chat() {
         console.log('Duplicate interaction, not recording again');
       }
     });}
+    if (lastMessage && lastMessage.role === 'user' && extractedUsername && lastMessage.content.trim() !== ''){
+        // 获取用户的最后一个问题
+    hasSentEventRef.current = true;
+    const userMessages = session.messages.filter(message => message.role === 'user');
+    const lastUserMessage = userMessages[userMessages.length - 1];
+    const userQuestion1 = lastUserMessage ? lastUserMessage.content : 'Unknown';
+    const userMessageTime = lastUserMessage ? lastUserMessage.date: 'Unknown';
+
+    // 第一步：获取UserID
+    const fetchUserID = async () => {
+      const response = await fetch('/api/recordInteraction', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'fetchUserID',
+          username: extractedUsername,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch UserID');
+      }
+
+      return response.json();
+    };
+
+    // 第二步：使用获取到的UserID发送交互数据
+    fetchUserID().then(data => {
+      const { UserID } = data;
+      const params2 = new URLSearchParams(window.location.search);
+      const questionid2 = params2.get("QuestionID");
+      const dataToSend: {
+        action: string;
+        UserID: any; // 考虑使用具体的类型而不是 any
+        ButtonName: string;
+        UserLogTime: string;
+        GPTMessages: string;
+        Note: string;
+        QuestionID?: number; // 可选的 QuestionID
+    } ={
+        action: 'insertInteraction',
+        UserID: UserID,
+        ButtonName: "User Input",
+        UserLogTime: lastUserMessage.date,
+        GPTMessages: `Question: ${userQuestion1}`,
+        Note: `User sent a message at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
+      };
+      if (questionid2) {
+        dataToSend['QuestionID'] = parseInt(questionid2,10);
+      }
+      const interactionKey = `${dataToSend.UserLogTime}-${dataToSend.GPTMessages}`;
+      const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
+      // console.log('BotMsg date and Id print:',lastMessage.date, lastMessage.id);
+      // console.log('now the messageIndex BOT:', session.messages.length)
+      if (!recordedInteractions.includes(interactionKey)) {
+        fetch('/api/recordInteraction', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dataToSend),
+        })
+        .then(response => {
+          if (response.ok) {
+            // Add to local storage to avoid future duplicates
+            recordedInteractions.push(interactionKey);
+            localStorage.setItem('recordedInteractions', JSON.stringify(recordedInteractions));
+            console.log('Interaction recorded:', dataToSend);
+          } else {
+            throw new Error('Failed to record interaction');
+          }
+          // hasSentEventRef.current = false;
+        })
+        .catch(error => console.error('Error:', error));
+      } else {
+        console.log('Duplicate interaction, not recording again');
+      }
+    });
+    }
 }, [session.messages,extractedUsername]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
@@ -759,9 +840,9 @@ function _Chat() {
   
       // 获取会话中的最后一条消息，假设它是机器人的回答
       const lastMessage = session.messages[session.messages.length - 1];
-      console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id);
-      console.log('UsrMsg content',lastMessage.content);
-      console.log('now the messageIndex USR:', session.messages.length)
+      // console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id);
+      // console.log('UsrMsg content',lastMessage.content);
+      // console.log('now the messageIndex USR:', session.messages.length)
       if (lastMessage) {
         const robotResponse = lastMessage; // 提取机器人的回答
   
