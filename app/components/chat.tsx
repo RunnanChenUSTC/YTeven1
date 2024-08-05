@@ -758,6 +758,7 @@ function _Chat() {
   
       // 获取会话中的最后一条消息，假设它是机器人的回答
       const lastMessage = session.messages[session.messages.length - 1];
+      console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id, lastMessage.content);
       if (lastMessage) {
         const robotResponse = lastMessage; // 提取机器人的回答
   
@@ -998,9 +999,9 @@ useEffect(() => {
     if (shouldSubmit(e) && promptHints.length === 0) {
       doSubmit(userInput);
       e.preventDefault();
-      const usrmessage = session.messages[session.messages.length - 1];
-      console.log('UsrMsg date and Id print:',usrmessage.date, usrmessage.id);
-      console.log('UsrMsg message content:',usrmessage.content);
+      // const usrmessage = session.messages[session.messages.length - 1];
+      // console.log('UsrMsg date and Id print:',usrmessage.date, usrmessage.id);
+      // console.log('UsrMsg message content:',usrmessage.content);
     }
   };
   const onRightClick = (e: any, message: ChatMessage) => {
