@@ -634,6 +634,7 @@ function _Chat() {
       }
       const interactionKey = `${dataToSend.UserID}-${dataToSend.GPTMessages}`;
       const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
+      console.log('BotMsg date and Id print:',lastMessage.date, lastMessage.id);
       if (!recordedInteractions.includes(interactionKey)) {
         fetch('/api/recordInteraction', {
           method: 'POST',
@@ -768,7 +769,7 @@ function _Chat() {
         });
       }
     });
-
+    
   localStorage.setItem(LAST_INPUT_KEY, userInput);
   setUserInput("");
   setPromptHints([]);
@@ -997,6 +998,9 @@ useEffect(() => {
     if (shouldSubmit(e) && promptHints.length === 0) {
       doSubmit(userInput);
       e.preventDefault();
+      const usrmessage = session.messages[session.messages.length - 1];
+      console.log('UsrMsg date and Id print:',usrmessage.date, usrmessage.id);
+      console.log('UsrMsg message content:',usrmessage.content);
     }
   };
   const onRightClick = (e: any, message: ChatMessage) => {
