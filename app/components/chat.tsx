@@ -662,6 +662,7 @@ function _Chat() {
       }
     });}
   if (lastMessage && lastMessage.role === 'user' && extractedUsername && lastMessage.content.trim() !== ''){
+    console.log("I have entered this user condition");
       // 获取用户的最后一个问题
   hasSentEventRef.current = true;
   const userMessages = session.messages.filter(message => message.role === 'user');
@@ -742,7 +743,7 @@ function _Chat() {
     }
   });
   }
-}, [session.messages,extractedUsername,session.messages[session.messages.length-1].role]);
+}, [session.messages,extractedUsername]);
   const chatCommands = useChatCommand({
     new: () => chatStore.newSession(),
     newm: () => navigate(Path.NewChat),
