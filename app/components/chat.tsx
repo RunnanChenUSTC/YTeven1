@@ -579,7 +579,8 @@ function _Chat() {
   const hasSentEventRef = useRef(false);
   useEffect(() => {
   const lastMessage = session.messages[session.messages.length - 1];
-  console.log("now the role is:",lastMessage.role)
+  if (lastMessage.role!=='undefined'){
+  console.log("now the role is:",lastMessage.role)}
   if (lastMessage && lastMessage.role === 'assistant' && extractedUsername && !lastMessage.streaming && lastMessage.content.trim() !== '') {
     // 获取用户的最后一个问题
     hasSentEventRef.current = true;
