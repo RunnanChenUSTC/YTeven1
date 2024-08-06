@@ -31,8 +31,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         query, params
       );
 
-      if (result[1][0].UserLogID) {
-        res.status(200).json({ success: true, message: 'Data inserted successfully',UserLogID: result[1][0].UserLogID });
+      if (result.affectedRows > 0) {
+        const [rows] = await connection.execute<RowDataPacket[]>(
+          'SELECT LAST_INSERT_ID() AS UserLogID'
+        );
+
+        if (rows.length > 0) {
+          const { UserLogID } = rows[0];
+          res.status(200).json({ success: true, message: 'Data inserted successfully', UserLogID });
       } else {
         throw new Error('Failed to insert data');
       }
