@@ -760,9 +760,7 @@ function _Chat() {
   
       // 获取会话中的最后一条消息，假设它是机器人的回答
       const lastMessage = session.messages[session.messages.length - 1];
-      if(lastMessage.role==='user'){
-        console.log("yes the user record is found.");
-      }
+      console.log('this is the role of lastmsg', lastMessage.role);
       // console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id);
       // console.log('UsrMsg content',lastMessage.content);
       // console.log('now the messageIndex USR:', session.messages.length)
