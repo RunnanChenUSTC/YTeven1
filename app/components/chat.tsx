@@ -744,6 +744,18 @@ function _Chat() {
     if (!response.ok) {
       throw new Error('Failed to insert user msg');
     }
+    // const UserLogID = '';
+    if (response.ok){
+      const responseData = await response.json(); // Parse JSON response
+      if (responseData.success) {
+      const { UserLogID } = responseData; // Extract UserLogID from response
+      console.log('UserLogID is HERE:', UserLogID);
+      localStorage.setItem('UserLogID', UserLogID.toString());
+      // Further actions with UserLogID if needed
+      } else {
+      throw new Error('Failed to get UserLogID from response');
+     }
+    }
     const matchCommand = chatCommands.match(userInput);
     if (matchCommand.matched) {
       setUserInput("");
@@ -754,10 +766,13 @@ function _Chat() {
     setIsLoading(true);
     chatStore.onUserInput(userInput).then(() => {
       setIsLoading(false);
-  
       // 获取当前会话
       const session = chatStore.currentSession();
-  
+      // Retrieve UserLogID from localStorage
+      const UserLogID = localStorage.getItem('UserLogID');
+
+      // Use userLogID as needed
+      console.log('UserLogID from localStorage 111:', UserLogID);
       // 获取会话中的最后一条消息，假设它是机器人的回答
       const lastMessage = session.messages[session.messages.length - 2];
       console.log('this is the content of lastmsg', lastMessage.content);
