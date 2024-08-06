@@ -58,6 +58,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       } else {
         res.status(404).json({ success: false, message: 'User not found' });
       }
+    } else if (action === 'updateSpecialNote') {
+      const { UserLogID, SpecialNote } = data;
+      const updateQuery = `
+        UPDATE user_log_UMN
+        SET SpecialNote = ?
+        WHERE UserLogID = ?
+      `;
+      const params = [SpecialNote, UserLogID];
+      const [updateResult] = await connection.execute<mysql2.ResultSetHeader>(updateQuery, params);
+
+      if (updateResult.affectedRows > 0) {
+        res.status(200).json({ success: true, message: 'SpecialNote updated successfully' });
+      } else {
+        throw new Error('Failed to update SpecialNote');
+      }
     } else {
       res.status(400).json({ message: 'Invalid action' });
     }
