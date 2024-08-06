@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const [result] = await connection.execute<mysql2.ResultSetHeader>(
         query, params
       );
-
+      
       if (result.affectedRows > 0) {
         const [rows] = await connection.execute<RowDataPacket[]>(
           'SELECT LAST_INSERT_ID() AS UserLogID'
@@ -39,9 +39,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (rows.length > 0) {
           const { UserLogID } = rows[0];
           res.status(200).json({ success: true, message: 'Data inserted successfully', UserLogID });
+        } else {
+          throw new Error('Failed to retrieve UserLogID');
+        }
       } else {
         throw new Error('Failed to insert data');
       }
+      
     } else if (action === 'fetchUserID') {
       const { username } = data;
       const [rows] = await connection.execute<RowDataPacket[]>(
