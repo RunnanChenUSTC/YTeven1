@@ -804,7 +804,7 @@ function _Chat() {
             throw new Error('Failed to update MsgIdentifier');
           }
         } catch (error) {
-          console.error('Error:', error.message);
+          throw new Error('Failed to insert user msg');
           // Handle error appropriately, show error message to user, etc.
         }
       } else {
