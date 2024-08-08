@@ -622,6 +622,7 @@ function _Chat() {
         GPTMessages: string;
         Note: string;
         QuestionID?: number; // 可选的 QuestionID
+        MsgIdentifier: string;
     } ={
         action: 'insertInteraction',
         UserID: UserID,
@@ -629,6 +630,7 @@ function _Chat() {
         UserLogTime: new Date().toISOString(),
         GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
+        MsgIdentifier: lastMessage.id
       };
       if (questionid2) {
         dataToSend['QuestionID'] = parseInt(questionid2,10);
