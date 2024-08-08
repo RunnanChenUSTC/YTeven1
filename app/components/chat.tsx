@@ -764,7 +764,7 @@ function _Chat() {
       return;
     }
     setIsLoading(true);
-    chatStore.onUserInput(userInput).then(() => {
+    chatStore.onUserInput(userInput).then(async () => {
       setIsLoading(false);
       // 获取当前会话
       const session = chatStore.currentSession();
@@ -776,6 +776,41 @@ function _Chat() {
       // 获取会话中的最后一条消息，假设它是机器人的回答
       const lastMessage = session.messages[session.messages.length - 2];
       console.log('this is the content of lastmsg', lastMessage.content);
+      if (UserLogID) {
+        const updateData = {
+          action: 'updateMsgId',
+          UserLogID: UserLogID,
+          MsgIdentifier: lastMessage.id, // Replace with actual MsgIdentifier value
+        };
+      
+        try {
+          const response = await fetch('/api/recordInteraction', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updateData),
+          });
+      
+          if (!response.ok) {
+            throw new Error('Failed to update MsgIdentifier');
+          }
+      
+          const responseData = await response.json();
+          if (responseData.success) {
+            console.log('MsgIdentifier updated successfully');
+            // Handle success as needed
+          } else {
+            throw new Error('Failed to update MsgIdentifier');
+          }
+        } catch (error) {
+          console.error('Error:', error.message);
+          // Handle error appropriately, show error message to user, etc.
+        }
+      } else {
+        console.error('UserLogID not found in localStorage');
+        // Handle scenario where UserLogID is not available
+      }
       // console.log('Usrpossible info and date:',lastMessage.date, lastMessage.id);
       // console.log('UsrMsg content',lastMessage.content);
       // console.log('now the messageIndex USR:', session.messages.length)
