@@ -628,7 +628,8 @@ function _Chat() {
         UserID: UserID,
         ButtonName: "Bot Response",
         UserLogTime: new Date().toISOString(),
-        GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
+        // GPTMessages: `Question: ${userQuestion}, Response: ${lastMessage.content}`,
+        GPTMessages: `${lastMessage.content}`,
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
         MsgIdentifier: lastMessage.id
       };
