@@ -570,7 +570,7 @@ function _Chat() {
           updatedMask.context[0].content = decodedToken.sysprompt; // Modify the context by adding a new item
           session.mask = updatedMask; // Set the modified mask back to the session
           console.log("now the context1 is", session.mask.context[0].content);
-      });
+      });}
       console.log('Extracted Username:', decodedToken.username);
       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
       console.log('Extracted pwd:', decodedToken.password);
