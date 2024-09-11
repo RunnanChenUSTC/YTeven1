@@ -8,7 +8,7 @@ interface MyTokenPayload extends JwtPayload {
   experimentGroup?: string;
   password: string;
   gptAuth: string;
-  sysprompt?: string;
+  sysprompt: string;
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
