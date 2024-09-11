@@ -8,6 +8,7 @@ interface MyTokenPayload extends JwtPayload {
   experimentGroup?: string;
   password: string;
   gptAuth: string;
+  sysprompt?: string;
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
@@ -563,6 +564,13 @@ function _Chat() {
       if (decodedToken.username) {
             setExtractedUsername(decodedToken.username);
       }
+      if (decodedToken.sysprompt){
+        chatStore.updateCurrentSession(session => {
+          const updatedMask = { ...session.mask }; // Copy the current mask
+          updatedMask.context[0].content = decodedToken.sysprompt; // Modify the context by adding a new item
+          session.mask = updatedMask; // Set the modified mask back to the session
+          console.log("now the context1 is", session.mask.context[0].content);
+      });
       console.log('Extracted Username:', decodedToken.username);
       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
       console.log('Extracted pwd:', decodedToken.password);
