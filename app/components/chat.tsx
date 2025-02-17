@@ -596,7 +596,7 @@ function _Chat() {
     const lastUserMessage = userMessages[userMessages.length - 1];
     const userQuestion = lastUserMessage ? lastUserMessage.content : 'Unknown';
     const userMessageTime = lastUserMessage ? lastUserMessage.date: 'Unknown';
-
+    const storedQuestionID = localStorage.getItem('currentQuestionID');
     // 第一步：获取UserID
     const fetchUserID = async () => {
       const response = await fetch('/api/recordInteraction', {
@@ -641,9 +641,13 @@ function _Chat() {
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
         MsgIdentifier: lastMessage.id
       };
-      if (questionid2) {
-        dataToSend['QuestionID'] = parseInt(questionid2,10);
+      // If the QuestionID exists in localStorage, associate it with the bot response
+      if (storedQuestionID) {
+        dataToSend['QuestionID'] = parseInt(storedQuestionID, 10);
       }
+      // if (questionid2) {
+      //   dataToSend['QuestionID'] = parseInt(questionid2,10);
+      // }
       const interactionKey = `${dataToSend.UserID}-${dataToSend.GPTMessages}`;
       const recordedInteractions = JSON.parse(localStorage.getItem('recordedInteractions') || '[]');
       // console.log('BotMsg date and Id print:',lastMessage.date, lastMessage.id);
@@ -742,8 +746,11 @@ function _Chat() {
       GPTMessages: userInput,
       Note: `user sent a message at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`
     }
+    let parsedQuestionID: number | null = null;
     if (questionid1) {
       interactionData['QuestionID'] = parseInt(questionid1,10);
+      // parsedQuestionID = parseInt(questionid1, 10);
+      localStorage.setItem('currentQuestionID', questionid1);
     }
     const response = await fetch('/api/recordInteraction', {
       method: 'POST',
