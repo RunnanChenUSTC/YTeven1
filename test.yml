@@ -1,0 +1,45 @@
+config:
+  target: 'https://scaffoldingumn.smartpal.chat/'  # 请替换为你的实际应用 URL
+  phases:
+    - duration: 60  # 测试持续时间：60秒
+      arrivalRate: 50  # 每秒模拟10个请求，模拟并发的用户访问
+
+scenarios:
+  - flow:
+      - post:
+          url: '/api/fetchQuestion'  # 对应的 API 路径
+          json:
+            action: 'fetchQuestion'
+            questionId: 24020304   
+      - think: 2  # 用户之间的间隔时间，模拟用户思考或等待时间
+
+  - flow:
+      - post:
+          url: '/api/recordInteraction'  # 对应的 API 路径
+          json:
+            action: 'insertInteraction'
+            UserID: '12345'  # 模拟一个用户ID，可以根据需要动态生成或随机选择
+            ButtonName: 'User Input'  # 示例按钮名
+            UserLogTime: '{{ Date.now() }}'  # 当前时间戳
+            GPTMessages: 'Some message from GPT'  # 示例 GPT 消息
+            Note: 'This is a test note'  # 示例笔记
+            QuestionID: '24020304'  # 固定的 QuestionID，可以替换成你想要的其他 ID
+            MsgIdentifier: 'MSG12345'  # 模拟一个 MsgIdentifier
+      - think: 2  # 用户之间的间隔时间，模拟用户思考或等待时间
+
+  - flow:
+      - post:
+          url: '/api/recordInteraction'  # 对应的 API 路径
+          json:
+            action: 'fetchUserID'
+            username: 'treat'  # 模拟一个用户名
+      - think: 2  # 用户之间的间隔时间，模拟用户思考或等待时间
+
+  - flow:
+      - post:
+          url: '/api/recordInteraction'  # 对应的 API 路径
+          json:
+            action: 'updateMsgId'
+            UserLogID: '14631'  # 模拟一个 UserLogID
+            MsgIdentifier: 'MSG67890'  # 新的 MsgIdentifier
+      - think: 2  # 用户之间的间隔时间，模拟用户思考或等待时间
