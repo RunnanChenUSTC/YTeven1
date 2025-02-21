@@ -25,9 +25,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { action, ...data } = req.body;
     try {
       if (action === 'insertInteraction') {
-        const { UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID, MsgIdentifier} = data;
-        const query = 'INSERT INTO user_log_UMN (UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID, MsgIdentifier) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const params = [UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID || null, MsgIdentifier || null];
+        const { UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID, MsgIdentifier, SpecialNote} = data;
+        const query = 'INSERT INTO user_log_UMN (UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID, MsgIdentifier, SpecialNote) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        const params = [UserID, ButtonName, UserLogTime, GPTMessages, Note, QuestionID || null, MsgIdentifier || null, SpecialNote || null];
         const [result] = await connection.execute<mysql2.ResultSetHeader>(
           query, params
         );
