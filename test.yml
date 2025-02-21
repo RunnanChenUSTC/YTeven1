@@ -2,7 +2,7 @@ config:
   target: 'https://scaffoldingumn.smartpal.chat/'  # 请替换为你的实际应用 URL
   phases:
     - duration: 60  # 测试持续时间：60秒
-      arrivalRate: 50  # 每秒模拟10个请求，模拟并发的用户访问
+      arrivalRate: 300  # 每秒模拟10个请求，模拟并发的用户访问
 
 scenarios:
   - flow:
