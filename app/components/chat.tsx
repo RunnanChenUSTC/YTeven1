@@ -668,7 +668,7 @@ function _Chat() {
       };
       const storedMsgId = localStorage.getItem('lastMessageId');
       // If the QuestionID exists in localStorage, associate it with the bot response
-      if (storedMsgId && foreUserMessage.id === storedMsgId && questionid2) {
+      if (storedMsgId && lastMessage.id === storedMsgId && questionid2) {
         dataToSend['QuestionID'] = parseInt(questionid2,10)-1; // 设置 QuestionID 为 -1
       }else if (questionid2) {
         // 如果从 URL 获取到的 QuestionID，使用它
