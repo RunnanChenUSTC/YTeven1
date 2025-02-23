@@ -604,7 +604,7 @@ function _Chat() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [window.location.search]);
+  }, [window.location.search, session.messages]);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   // const [hasSentEvent, setHasSentEvent] = useState(false);
