@@ -2,6 +2,7 @@
 // import jwtDecode from 'jwt-decode'; // Correct import for jwt-decode
 import {jwtDecode} from 'jwt-decode';
 import { JwtPayload } from 'jwt-decode';
+import { useLocation } from 'react-router-dom';
 // Define a new interface that includes the expected properties from the JWT payload
 interface MyTokenPayload extends JwtPayload {
   username?: string;
@@ -582,13 +583,14 @@ function _Chat() {
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const lastMessageIdRef = useRef<string | null>(null);
+  const location = useLocation(); 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       // Get the last message from session
       const lastMessage = session.messages[session.messages.length - 1];
 
       // Step 2: Check the two conditions simultaneously
-      if (lastMessage && lastMessage.streaming) {
+      if (lastMessage.streaming) {
         // Both conditions are met: message is streaming, and user is navigating away
         lastMessageIdRef.current = lastMessage.id; // Store the current message id
 
@@ -604,7 +606,7 @@ function _Chat() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [window.location.search, session.messages]);
+  }, [location.search, session.messages]);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   // const [hasSentEvent, setHasSentEvent] = useState(false);
