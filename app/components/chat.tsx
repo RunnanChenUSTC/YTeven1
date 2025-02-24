@@ -586,28 +586,17 @@ function _Chat() {
   const location = useLocation();
   const urlistener = new URLSearchParams(window.location.search); 
   useEffect(() => {
-    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      console.log('problem here!');
-      // Get the last message from session
-      const lastMessage = session.messages[session.messages.length - 1];
-
-      // Step 2: Check the two conditions simultaneously
-      if (lastMessage.streaming) {
+    console.log('problem here!');
+    // Get the last message from session
+    const lastMessage = session.messages[session.messages.length - 1];
+    // Step 2: Check the two conditions simultaneously
+    if (lastMessage.streaming) {
         // Both conditions are met: message is streaming, and user is navigating away
         lastMessageIdRef.current = lastMessage.id; // Store the current message id
 
         // Save the message id to localStorage for later handling
         localStorage.setItem('lastMessageId', lastMessage.id);
-      }
-    };
-
-    // Attach the event listener when the component mounts
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    // Cleanup on component unmount
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
+    }
   }, [urlistener]);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
