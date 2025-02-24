@@ -590,7 +590,7 @@ function _Chat() {
     // Get the last message from session
     const lastMessage = session.messages[session.messages.length - 1];
     // Step 2: Check the two conditions simultaneously
-    if (lastMessage.streaming) {
+    if (lastMessage && lastMessage.streaming) {
         // Both conditions are met: message is streaming, and user is navigating away
         lastMessageIdRef.current = lastMessage.id; // Store the current message id
 
