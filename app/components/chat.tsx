@@ -584,7 +584,7 @@ function _Chat() {
   // chat commands shortcuts
   const lastMessageIdRef = useRef<string | null>(null);
   const location = useLocation();
-  const urlistener = new URLSearchParams(window.location.search); 
+  // const urlistener = new URLSearchParams(window.location.search); 
   useEffect(() => {
     console.log('problem here!');
     // Get the last message from session
@@ -596,8 +596,9 @@ function _Chat() {
 
         // Save the message id to localStorage for later handling
         localStorage.setItem('lastMessageId', lastMessage.id);
+        console.log(lastMessage.id);
     }
-  }, [urlistener]);
+  }, [window.location.search]);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   // const [hasSentEvent, setHasSentEvent] = useState(false);
