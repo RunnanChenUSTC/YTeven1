@@ -601,7 +601,7 @@ function _Chat() {
 
         // Save the message id to localStorage for later handling
         localStorage.setItem('lastMessageId', lastMessage.id);
-        console.log(lastMessage.id);
+        console.log("lastmessageid:",lastMessage.id);
     }
   }, [questionidhk]);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
