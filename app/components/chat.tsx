@@ -586,11 +586,17 @@ function _Chat() {
   const location = useLocation();
   // const urlistener = new URLSearchParams(window.location.search); 
   useEffect(() => {
-    console.log('problem here!');
     // Get the last message from session
     const lastMessage = session.messages[session.messages.length - 1];
     // Step 2: Check the two conditions simultaneously
+    if (lastMessage){
+      console.log('message is checked');
+    }
+    if (lastMessage.streaming){
+      console.log('state is checked');
+    }
     if (lastMessage && lastMessage.streaming) {
+        console.log('problem here!');
         // Both conditions are met: message is streaming, and user is navigating away
         lastMessageIdRef.current = lastMessage.id; // Store the current message id
 
