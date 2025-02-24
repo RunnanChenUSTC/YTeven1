@@ -592,9 +592,6 @@ function _Chat() {
     if (lastMessage){
       console.log('message is checked');
     }
-    if (lastMessage.streaming){
-      console.log('state is checked');
-    }
     if (lastMessage && lastMessage.streaming) {
         console.log('problem here!');
         // Both conditions are met: message is streaming, and user is navigating away
