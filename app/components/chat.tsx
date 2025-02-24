@@ -583,9 +583,11 @@ function _Chat() {
   useEffect(measure, [userInput]);
   // chat commands shortcuts
   const lastMessageIdRef = useRef<string | null>(null);
-  const location = useLocation(); 
+  const location = useLocation();
+  const urlistener = new URLSearchParams(window.location.search); 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      console.log('problem here!');
       // Get the last message from session
       const lastMessage = session.messages[session.messages.length - 1];
 
@@ -606,7 +608,7 @@ function _Chat() {
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
-  }, [location.search, session.messages]);
+  }, [urlistener]);
   const [hasRecordedInteraction, setHasRecordedInteraction] = useState(false);
   const hasRecordedInteractionRef = useRef(hasRecordedInteraction);
   // const [hasSentEvent, setHasSentEvent] = useState(false);
