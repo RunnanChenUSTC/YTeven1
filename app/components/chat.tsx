@@ -666,18 +666,18 @@ function _Chat() {
         Note: `Respond to user at ${new Date().toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" })}`,
         MsgIdentifier: lastMessage.id
       };
-      const storedMsgId = localStorage.getItem('lastMessageId');
-      console.log('Unloadbotmsg',storedMsgId);
+      // const storedMsgId = localStorage.getItem('lastMessageId');
+      // console.log('Unloadbotmsg',storedMsgId);
       // If the QuestionID exists in localStorage, associate it with the bot response
-      if (storedMsgId && lastBotMessage.id === storedMsgId && questionid2) {
-        dataToSend['QuestionID'] = parseInt(questionid2,10)-1; // 设置 QuestionID 为 -1
-      }else if (questionid2) {
-        // 如果从 URL 获取到的 QuestionID，使用它
-        dataToSend['QuestionID'] = parseInt(questionid2, 10);
-      }
-      // if (storedQuestionID) {
-      //   dataToSend['QuestionID'] = parseInt(storedQuestionID, 10);
+      // if (storedMsgId && lastBotMessage.id === storedMsgId && questionid2) {
+      //   dataToSend['QuestionID'] = parseInt(questionid2,10)-1; // 设置 QuestionID 为 -1
+      // }else if (questionid2) {
+      //   // 如果从 URL 获取到的 QuestionID，使用它
+      //   dataToSend['QuestionID'] = parseInt(questionid2, 10);
       // }
+      if (storedQuestionID) {
+        dataToSend['QuestionID'] = parseInt(storedQuestionID, 10);
+      }
       // if (questionid2) {
       //   dataToSend['QuestionID'] = parseInt(questionid2,10);
       // }
