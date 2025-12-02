@@ -953,6 +953,8 @@ const firstQuestionIDReceivedRef = useRef(false);
 // const [questionIDs, setQuestionIDs] = useState(new Set());
 const [firstQuestionID, setFirstQuestionID] = useState(null); // Store the very first QuestionID
 const [seenQuestionIDs, setSeenQuestionIDs] = useState(new Set()); // Set to track seen QuestionIDs
+// UserAliasID state - 用于存储从URL读取的用户别名ID
+const [userAliasID, setUserAliasID] = useState<string | null>(null);
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
   const questionid = params.get("QuestionID");
@@ -1033,6 +1035,21 @@ useEffect(() => {
       });
   }
 }, [autoSubmitted, extractedUsername])
+
+// 从URL读取UserAliasID（如果存在）
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const userAliasIdParam = params.get("UserAliasID");
+  
+  if (userAliasIdParam) {
+    console.log("Received UserAliasID from URL:", userAliasIdParam);
+    setUserAliasID(userAliasIdParam);
+    // 可选：将UserAliasID存储到localStorage以便后续使用
+    localStorage.setItem('userAliasID', userAliasIdParam);
+  }
+  // 如果没有UserAliasID参数，不做任何处理，正常继续
+}, []); // 只在组件挂载时执行一次
+
 // useEffect(() => {
 //   const params = new URLSearchParams(window.location.search);
 //   const question = params.get("question");
