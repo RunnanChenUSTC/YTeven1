@@ -1039,7 +1039,7 @@ useEffect(() => {
 // 从URL读取UserAliasID（如果存在）
 useEffect(() => {
   const params = new URLSearchParams(window.location.search);
-  const userAliasIdParam = params.get("UserAliasID");
+  const userAliasIdParam = params.get("PROLIFIC_PID");
   
   if (userAliasIdParam) {
     console.log("Received UserAliasID from URL:", userAliasIdParam);
