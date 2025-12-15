@@ -24,9 +24,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try{
       // 处理基于questionId的查询
       if (action === 'fetchQuestion') {
+        // 确保 questionId 是字符串类型
+        const questionIdStr = String(questionId);
         const [rows] = await pool.execute<RowDataPacket[]>(
-          'SELECT Content FROM Question_UMN WHERE QuestionID = ?',
-          [questionId]
+          'SELECT Content FROM Question_XM WHERE QuestionID = ?',
+          [questionIdStr]
         );
 
         if (rows.length > 0) {
