@@ -9,7 +9,7 @@ interface MyTokenPayload extends JwtPayload {
   experimentGroup?: string;
   password: string;
   gptAuth: string;
-  sysprompt: string;
+  promptID?: string; // 改为 promptID，从数据库查询实际内容
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
@@ -565,13 +565,21 @@ function _Chat() {
       if (decodedToken.username) {
             setExtractedUsername(decodedToken.username);
       }
-      if (decodedToken.sysprompt){
-        chatStore.updateCurrentSession(session => {
-          const updatedMask = { ...session.mask }; // Copy the current mask
-          updatedMask.context[0].content = decodedToken.sysprompt; // Modify the context by adding a new item
-          session.mask = updatedMask; // Set the modified mask back to the session
-          console.log("now the context1 is", session.mask.context[0].content);
-      });}
+      // 如果 token 中有 promptID，从数据库获取 prompt 内容
+      if (decodedToken.promptID){
+        fetchPrompt(decodedToken.promptID).then(promptContent => {
+          if (promptContent) {
+            chatStore.updateCurrentSession(session => {
+              const updatedMask = { ...session.mask }; // Copy the current mask
+              updatedMask.context[0].content = promptContent; // Modify the context with fetched prompt content
+              session.mask = updatedMask; // Set the modified mask back to the session
+              console.log("now the context1 is", session.mask.context[0].content);
+            });
+          } else {
+            console.error("Failed to fetch prompt content for promptID:", decodedToken.promptID);
+          }
+        });
+      }
       console.log('Extracted Username:', decodedToken.username);
       console.log('Extracted Experiment Group:', decodedToken.experimentGroup);
       console.log('Extracted pwd:', decodedToken.password);
@@ -917,6 +925,41 @@ function _Chat() {
   // 自动处理URL中的question参数
 const [questionContent, setQuestionContent] = useState('');
 // const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false);
+
+// 从数据库获取 prompt 内容（需要在 useEffect 之前定义）
+const fetchPrompt = async (promptID: string) => {
+  try {
+    // promptID 保持为字符串类型
+    if (!promptID || promptID.trim() === '') {
+      console.error("Invalid PromptID:", promptID);
+      return null;
+    }
+    const response = await fetch('/api/fetchPrompt', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ action: 'fetchPrompt', promptID: promptID })
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch prompt');
+    }
+
+    const data = await response.json();
+    if (data.success) {
+      console.log("Fetched prompt content:", data.prompt.Prompts);
+      return data.prompt.Prompts;
+    } else {
+      console.error('Failed to fetch prompt:', data.message);
+      return null;
+    }
+  } catch (error) {
+    console.error('Request failed:', error);
+    return null;
+  }
+};
+
 const fetchQuestion = async (questionId: string) => {
   try {
     // questionId 保持为字符串类型，不转换为整数
