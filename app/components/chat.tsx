@@ -9,7 +9,7 @@ interface MyTokenPayload extends JwtPayload {
   experimentGroup?: string;
   password: string;
   gptAuth: string;
-  sysprompt?: string; // sysprompt 字段现在存储的是 promptID，需要从数据库查询实际内容
+  sysprompt?: number | string; // sysprompt 字段现在存储的是 promptID（数字或字符串），需要从数据库查询实际内容
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
@@ -927,19 +927,33 @@ const [questionContent, setQuestionContent] = useState('');
 // const [firstQuestionIDReceived, setFirstQuestionIDReceived] = useState(false);
 
 // 从数据库获取 prompt 内容（需要在 useEffect 之前定义）
-const fetchPrompt = async (promptID: string) => {
+const fetchPrompt = async (promptID: number | string) => {
   try {
-    // promptID 保持为字符串类型
-    if (!promptID || promptID.trim() === '') {
+    // promptID 可以是数字或字符串类型
+    // 验证 promptID 是否有效
+    if (promptID === null || promptID === undefined || promptID === '') {
       console.error("Invalid PromptID:", promptID);
       return null;
     }
+    // 如果是字符串类型，检查是否为空
+    if (typeof promptID === 'string' && promptID.trim() === '') {
+      console.error("Invalid PromptID (empty string):", promptID);
+      return null;
+    }
+    // 如果是数字类型，检查是否为有效数字
+    if (typeof promptID === 'number' && (isNaN(promptID) || promptID <= 0)) {
+      console.error("Invalid PromptID (invalid number):", promptID);
+      return null;
+    }
+    
+    // 将 promptID 转换为字符串用于 API 调用
+    const promptIDStr = String(promptID);
     const response = await fetch('/api/fetchPrompt', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ action: 'fetchPrompt', promptID: promptID })
+      body: JSON.stringify({ action: 'fetchPrompt', promptID: promptIDStr })
     });
 
     if (!response.ok) {
