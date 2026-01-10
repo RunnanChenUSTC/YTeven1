@@ -25,10 +25,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // 处理基于promptID的查询
       if (action === 'fetchPrompt') {
         // 确保 promptID 是字符串类型
-        const promptIDStr = String(promptID);
+        //const promptID = String(promptID);
         const [rows] = await pool.execute<RowDataPacket[]>(
           'SELECT Prompts FROM prompt_xm WHERE PromptID = ?',
-          [promptIDStr]
+          [promptID]
         );
 
         if (rows.length > 0) {
