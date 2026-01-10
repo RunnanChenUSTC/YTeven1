@@ -9,7 +9,7 @@ interface MyTokenPayload extends JwtPayload {
   experimentGroup?: string;
   password: string;
   gptAuth: string;
-  promptID?: string; // 改为 promptID，从数据库查询实际内容
+  sysprompt?: string; // sysprompt 字段现在存储的是 promptID，需要从数据库查询实际内容
 }
 import { useDebouncedCallback } from "use-debounce";
 import React, {
@@ -565,9 +565,9 @@ function _Chat() {
       if (decodedToken.username) {
             setExtractedUsername(decodedToken.username);
       }
-      // 如果 token 中有 promptID，从数据库获取 prompt 内容
-      if (decodedToken.promptID){
-        fetchPrompt(decodedToken.promptID).then(promptContent => {
+      // 如果 token 中有 sysprompt（现在存储的是 promptID），从数据库获取 prompt 内容
+      if (decodedToken.sysprompt){
+        fetchPrompt(decodedToken.sysprompt).then(promptContent => {
           if (promptContent) {
             chatStore.updateCurrentSession(session => {
               const updatedMask = { ...session.mask }; // Copy the current mask
@@ -576,7 +576,7 @@ function _Chat() {
               console.log("now the context1 is", session.mask.context[0].content);
             });
           } else {
-            console.error("Failed to fetch prompt content for promptID:", decodedToken.promptID);
+            console.error("Failed to fetch prompt content for promptID:", decodedToken.sysprompt);
           }
         });
       }
